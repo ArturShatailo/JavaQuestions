@@ -9,10 +9,8 @@ import com.study.javaquestions.service.sender.SenderServiceBean;
 import com.study.javaquestions.service.topic.TopicServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @AllArgsConstructor
 @Service
@@ -25,6 +23,8 @@ public class QuestionsListServiceBean implements ActionHandlerService, Buttonabl
     private final TopicServiceBean topicServiceBean;
 
     private final QuestionSessionServiceBean questionSessionServiceBean;
+
+    private final QuestionServiceBean questionServiceBean;
 
     @Override
     public int globalCheck() {
@@ -42,23 +42,24 @@ public class QuestionsListServiceBean implements ActionHandlerService, Buttonabl
         String chatID = request.getSendMessage().getChatId();
         sessions.put(chatID, "QUESTIONS LIST");
 
-
         Topic topic = defineTopic(request.getSendMessage().getText());
-        QuestionSession q = questionsSessions.get(chatID);
-        q.setTopic(topic);
-
-        //questionSessionServiceBean.create(q);
-        //questionSessionServiceBean.updateTopicByChatId(chatID, request.getSendMessage().getText());
+        processQuestionSession(topic, chatID);
+        //QuestionSession q = questionsSessions.get(chatID);
+        //q.setTopic(topic);
 
         createKeyboard(request, defineKeyboard());
 
         sender.sendMessage(request, "Список питань 👇");
-        defineQuestions(q, request);
+        defineQuestions(request);
     }
 
-    private void defineQuestions(QuestionSession q, Request request) {
+    private void processQuestionSession(Topic topic, String chatID) {
+        questionSessionServiceBean.updateTopicByChatId(chatID, topic);
+    }
+
+    private void defineQuestions(Request request) {
         try {
-            Set<Question> questions = q.getTopic().getQuestions();
+            List<Question> questions = questionServiceBean.getQuestionsListByLevelAndTopic(request.getSendMessage().getChatId());
             if (questions.size() == 0) noQuestionsToShow(request);
             else showQuestions(questions, request);
         } catch (Exception e) {
@@ -71,11 +72,7 @@ public class QuestionsListServiceBean implements ActionHandlerService, Buttonabl
         sender.sendMessage(request, "В цій категорії ще немає питань \uD83E\uDD37");
     }
 
-    private void showQuestions(Set<Question> questions, Request request) {
-
-        long time5 = System.currentTimeMillis();
-
-        //action
+    private void showQuestions(List<Question> questions, Request request) {
 
         questions.forEach(q -> sender.sendMessageWithButtons(
                 request,
@@ -83,9 +80,6 @@ public class QuestionsListServiceBean implements ActionHandlerService, Buttonabl
                 createInlineKeyboard(
                         getKeyboardMap(Arrays.asList("\uD83D\uDD2E Відкрити відповідь", "Відкрити відповідь від питання " + "#" + q.getId()))
                 )));
-
-        System.out.println("SHOW QUESTIONS | TIME IS SPENT: " + (System.currentTimeMillis() - time5));
-        System.out.println("\n----------------------------------------\n");
     }
 
     private Topic defineTopic(String topicName) {
@@ -93,6 +87,6 @@ public class QuestionsListServiceBean implements ActionHandlerService, Buttonabl
     }
 
     public List<String> defineKeyboard() {
-        return Arrays.asList("🔙 Повернутись до головного меню");
+        return List.of("🔙 Повернутись до головного меню");
     }
 }

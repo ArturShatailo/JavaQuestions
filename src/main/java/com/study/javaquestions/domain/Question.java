@@ -3,7 +3,6 @@ package com.study.javaquestions.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
-import java.util.Set;
 
 @Table(name = "questions")
 @Data
@@ -21,10 +20,10 @@ public class Question {
 
     private String hint;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private Topic topic;
-//
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private Level level;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Topic topic;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Level level;
 
 }
