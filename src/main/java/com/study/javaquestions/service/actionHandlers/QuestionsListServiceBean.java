@@ -75,8 +75,6 @@ public class QuestionsListServiceBean implements ActionHandlerService, Buttonabl
 
         long time5 = System.currentTimeMillis();
 
-        //action
-
         questions.forEach(q -> sender.sendMessageWithButtons(
                 request,
                 q.getTitle(),
