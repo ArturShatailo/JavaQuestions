@@ -10,6 +10,7 @@ import com.study.javaquestions.service.topic.TopicServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
@@ -73,17 +74,13 @@ public class QuestionsListServiceBean implements ActionHandlerService, Buttonabl
 
     private void showQuestions(Set<Question> questions, Request request) {
 
-        long time5 = System.currentTimeMillis();
-
-        questions.forEach(q -> sender.sendMessageWithButtons(
+        new ArrayList<>(questions)
+        .forEach(q -> sender.sendMessageWithButtons(
                 request,
                 q.getTitle(),
                 createInlineKeyboard(
                         getKeyboardMap(Arrays.asList("\uD83D\uDD2E Відкрити відповідь", "Відкрити відповідь від питання " + "#" + q.getId()))
                 )));
-
-        System.out.println("SHOW QUESTIONS | TIME IS SPENT: " + (System.currentTimeMillis() - time5));
-        System.out.println("\n----------------------------------------\n");
     }
 
     private Topic defineTopic(String topicName) {
