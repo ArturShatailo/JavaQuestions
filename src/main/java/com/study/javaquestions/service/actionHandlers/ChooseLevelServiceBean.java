@@ -10,8 +10,6 @@ import com.study.javaquestions.service.questionSession.QuestionSessionServiceBea
 import com.study.javaquestions.service.sender.SenderServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,11 +43,15 @@ public class ChooseLevelServiceBean implements ActionHandlerService, Buttonable,
         String chatID = request.getSendMessage().getChatId();
         sessions.put(chatID, "CHOOSE LEVEL");
 
-        questionsSessions.put(chatID, new QuestionSession(chatID));
-        //questionSessionServiceBean.create(new QuestionSession(chatID));
+        //questionsSessions.put(chatID, new QuestionSession(chatID));
+        processQuestionSession(chatID);
 
         createKeyboard(request, defineKeyboard());
         sender.sendMessage(request, "Обери рівень підготовки 👇");
+    }
+
+    private void processQuestionSession(String chatID) {
+        questionSessionServiceBean.create(new QuestionSession(chatID));
     }
 
     public List<String> defineKeyboard() {

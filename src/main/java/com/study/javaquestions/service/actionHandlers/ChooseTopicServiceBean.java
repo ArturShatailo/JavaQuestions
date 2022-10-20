@@ -4,15 +4,12 @@ import com.study.javaquestions.bot.Buttonable;
 import com.study.javaquestions.bot.componenents.BotSession;
 import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.Topic;
-import com.study.javaquestions.repository.TopicRepository;
 import com.study.javaquestions.service.level.LevelServiceBean;
 import com.study.javaquestions.service.questionSession.QuestionSessionServiceBean;
 import com.study.javaquestions.service.sender.SenderServiceBean;
 import com.study.javaquestions.domain.Request;
-import com.study.javaquestions.service.topic.TopicServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,11 +43,15 @@ public class ChooseTopicServiceBean implements ActionHandlerService, Buttonable,
         sessions.put(chatID, "CHOOSE TOPIC AND SHOW LIST");
 
         Level level = defineLevel(request.getSendMessage().getText());
-        questionsSessions.get(chatID).setLevel(level);
-        //questionSessionServiceBean.updateLevelByChatId(chatID, request.getSendMessage().getText());
+        processQuestionSession(level, chatID);
+        //questionsSessions.get(chatID).setLevel(level);
 
         createKeyboard(request, defineKeyboard(level.getTopics()));
         sender.sendMessage(request, "Обери топік 👇");
+    }
+
+    private void processQuestionSession(Level level, String chatID) {
+        questionSessionServiceBean.updateLevelByChatId(chatID, level);
     }
 
     private Level defineLevel(String levelName) {
