@@ -1,30 +1,29 @@
 package com.study.javaquestions.controller;
 
+import com.study.javaquestions.service.actionHandlers.ChooseLevelServiceBean;
 import com.study.javaquestions.domain.Request;
-import com.study.javaquestions.service.HandlerServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class ChooseTopicHandler implements ActionHandler {
+public class ChooseLevelController implements ActionHandler {
 
-    private final HandlerServiceBean handlerServiceBean;
+    private final ChooseLevelServiceBean serviceBean;
 
     @Override
     public int isGlobal() {
-        return 0;
+        return serviceBean.globalCheck();
     }
 
     @Override
     public boolean isMine(Request request) {
-        String requestSession = "CHOOSE LEVEL";
-        return request.getStep().toLowerCase().startsWith(requestSession.toLowerCase());
+        return serviceBean.mineCheck(request);
     }
 
     @Override
     public void handleRequest(Request request) {
-        handlerServiceBean.chooseTopicRequest(request);
+        serviceBean.sendRequest(request);
     }
 
 }
