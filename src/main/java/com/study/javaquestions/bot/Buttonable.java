@@ -12,6 +12,8 @@ import java.util.*;
 
 public interface Buttonable {
 
+    //List<String> defineKeyboard();
+
     default void createKeyboard(Request R, List<String> N){
 
         SendMessage SM = R.getSendMessage();
