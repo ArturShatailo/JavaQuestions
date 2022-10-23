@@ -1,6 +1,5 @@
 package com.study.javaquestions.service.actionHandlers;
 
-import com.study.javaquestions.service.button.ButtonService;
 import com.study.javaquestions.bot.componenents.BotSession;
 import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.QuestionSession;
@@ -11,6 +10,7 @@ import com.study.javaquestions.service.questionSession.QuestionSessionServiceBea
 import com.study.javaquestions.service.sender.SenderServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,7 +52,8 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession 
         processQuestionSession(chatID);
 
         buttons.createKeyboard(request, defineKeyboard());
-        sender.sendMessage(request, "Обери рівень підготовки 👇");
+        showInlineButtons(getLevels(), request);
+        //sender.sendMessage(request, "Обери рівень підготовки 👇");
     }
 
     private void processQuestionSession(String chatID) {
@@ -60,12 +61,18 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession 
     }
 
     public List<String> defineKeyboard() {
-        List<String> keyboard = getLevels()
-                .stream()
-                .map(Level::getName)
-                .collect(Collectors.toList());
-        keyboard.add("🔙 Повернутись до головного меню");
-        return keyboard;
+        return List.of("🔙 Повернутись до головного меню");
+    }
+
+    private void showInlineButtons(List<Level> levels, Request request) {
+        sender.sendMessageWithButtons(
+                request,
+                "Обери рівень підготовки 👇",
+                buttons.createInlineKeyboard(
+                        levels.stream()
+                                .map(Level::getName)
+                                .collect(Collectors.toList())
+                ));
     }
 
     private List<Level> getLevels(){

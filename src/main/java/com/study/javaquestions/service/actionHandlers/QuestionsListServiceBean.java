@@ -75,7 +75,6 @@ public class QuestionsListServiceBean implements ActionHandlerService, BotSessio
     }
 
     private void showQuestions(List<Question> questions, Request request) {
-
         questions.forEach(q -> sender.sendMessageWithButtons(
                 request,
                 q.getTitle(),

@@ -38,31 +38,6 @@ public class ButtonServiceBean implements ButtonService{
     }
 
     @Override
-    public InlineKeyboardMarkup createInlineKeyboard(/*Request R,*/ List<String> N, String callbackData){
-
-        //SendMessage SM = R.getSendMessage();
-
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        //SM.setReplyMarkup(inlineKeyboardMarkup);
-
-        List<InlineKeyboardButton> keyboardButtonList = new ArrayList<>();
-
-        for (String s : N) {
-            InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-            inlineKeyboardButton.setText(s);
-            inlineKeyboardButton.setCallbackData(callbackData);
-            keyboardButtonList.add(inlineKeyboardButton);
-        }
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonList);
-
-        inlineKeyboardMarkup.setKeyboard(rowList);
-
-        return inlineKeyboardMarkup;
-    }
-
-    @Override
     public InlineKeyboardMarkup createInlineKeyboard(Map<String, String> N){
 
         //SendMessage SM = R.getSendMessage();
@@ -80,6 +55,29 @@ public class ButtonServiceBean implements ButtonService{
             InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
             inlineKeyboardButton.setText(s.getKey());
             inlineKeyboardButton.setCallbackData(s.getValue());
+            keyboardButtonList.add(inlineKeyboardButton);
+        }
+
+        inlineKeyboardMarkup.setKeyboard(rowList);
+
+        return inlineKeyboardMarkup;
+    }
+
+
+    public InlineKeyboardMarkup createInlineKeyboard(List<String> N){
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+
+        for (String s : N) {
+
+            List<InlineKeyboardButton> keyboardButtonList = new ArrayList<>();
+            rowList.add(keyboardButtonList);
+
+            InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+            inlineKeyboardButton.setText(s);
+            inlineKeyboardButton.setCallbackData(s);
             keyboardButtonList.add(inlineKeyboardButton);
         }
 

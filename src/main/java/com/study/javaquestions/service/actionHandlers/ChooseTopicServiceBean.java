@@ -49,8 +49,19 @@ public class ChooseTopicServiceBean implements ActionHandlerService, BotSession 
         processQuestionSession(level, chatID);
         //questionsSessions.get(chatID).setLevel(level);
 
-        buttons.createKeyboard(request, defineKeyboard(level.getTopics()));
-        sender.sendMessage(request, "Обери топік 👇");
+        buttons.createKeyboard(request, defineKeyboard());
+        showInlineButtons(level.getTopics(), request);
+    }
+
+    private void showInlineButtons(Set<Topic> topics, Request request) {
+        sender.sendMessageWithButtons(
+                request,
+                "Обери топік 👇",
+                buttons.createInlineKeyboard(
+                        topics.stream()
+                                .map(Topic::getName)
+                                .collect(Collectors.toList())
+                ));
     }
 
     private void processQuestionSession(Level level, String chatID) {
@@ -62,13 +73,8 @@ public class ChooseTopicServiceBean implements ActionHandlerService, BotSession 
     }
 
 
-    public List<String> defineKeyboard(Set<Topic> topics) {
-        List<String> keyboard = topics
-                .stream()
-                .map(Topic::getName)
-                .collect(Collectors.toList());
-        keyboard.add("🔙 Повернутись до вибору рівня");
-        return keyboard;
+    public List<String> defineKeyboard() {
+        return List.of("🔙 Повернутись до вибору рівня");
     }
 
 }

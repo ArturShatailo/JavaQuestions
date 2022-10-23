@@ -10,8 +10,6 @@ public interface ButtonService {
 
     void createKeyboard(Request request, List<String> buttonsText);
 
-    InlineKeyboardMarkup createInlineKeyboard(/*Request R,*/ List<String> N, String callbackData);
-
     InlineKeyboardMarkup createInlineKeyboard(Map<String, String> N);
 
     Map<String, String> getKeyboardMap(List<String> mapInlined);

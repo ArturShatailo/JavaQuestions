@@ -10,9 +10,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageMedia;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+import org.telegram.telegrambots.meta.api.objects.media.InputMedia;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
 @Component
@@ -37,9 +41,10 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotFacto
 
         if (update.hasMessage() && update.getMessage().hasText())
             processMessage(update.getMessage());
-        else if (update.hasCallbackQuery())
-            processMessage(update.getMessage());
-        else
+        else if (update.hasCallbackQuery()) {
+            update.getCallbackQuery().getMessage().setText(update.getCallbackQuery().getData());
+            processMessage(update.getCallbackQuery().getMessage());
+        }else
             log.warn("Unexpected update from user");
     }
 
