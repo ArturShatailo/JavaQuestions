@@ -1,9 +1,10 @@
 package com.study.javaquestions.service.actionHandlers;
 
-import com.study.javaquestions.bot.Buttonable;
+import com.study.javaquestions.service.button.ButtonService;
 import com.study.javaquestions.bot.componenents.BotSession;
 import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.Topic;
+import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.level.LevelServiceBean;
 import com.study.javaquestions.service.questionSession.QuestionSessionServiceBean;
 import com.study.javaquestions.service.sender.SenderServiceBean;
@@ -18,9 +19,11 @@ import java.util.stream.Collectors;
 @Service
 //BotSession can be injected
 //Buttonable can be injected
-public class ChooseTopicServiceBean implements ActionHandlerService, Buttonable, BotSession {
+public class ChooseTopicServiceBean implements ActionHandlerService, BotSession {
 
     private final SenderServiceBean sender;
+
+    private final ButtonServiceBean buttons;
 
     private final QuestionSessionServiceBean questionSessionServiceBean;
 
@@ -46,7 +49,7 @@ public class ChooseTopicServiceBean implements ActionHandlerService, Buttonable,
         processQuestionSession(level, chatID);
         //questionsSessions.get(chatID).setLevel(level);
 
-        createKeyboard(request, defineKeyboard(level.getTopics()));
+        buttons.createKeyboard(request, defineKeyboard(level.getTopics()));
         sender.sendMessage(request, "Обери топік 👇");
     }
 
@@ -64,7 +67,7 @@ public class ChooseTopicServiceBean implements ActionHandlerService, Buttonable,
                 .stream()
                 .map(Topic::getName)
                 .collect(Collectors.toList());
-        keyboard.add("🔙 Повернутись до головного меню");
+        keyboard.add("🔙 Повернутись до вибору рівня");
         return keyboard;
     }
 

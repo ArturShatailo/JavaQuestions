@@ -1,8 +1,8 @@
 package com.study.javaquestions.service.actionHandlers;
 
-import com.study.javaquestions.bot.Buttonable;
 import com.study.javaquestions.bot.componenents.BotSession;
 import com.study.javaquestions.domain.*;
+import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.question.QuestionServiceBean;
 import com.study.javaquestions.service.questionSession.QuestionSessionServiceBean;
 import com.study.javaquestions.service.sender.SenderServiceBean;
@@ -16,9 +16,11 @@ import java.util.List;
 @Service
 //BotSession can be injected
 //Buttonable can be injected
-public class QuestionsListServiceBean implements ActionHandlerService, Buttonable, BotSession {
+public class QuestionsListServiceBean implements ActionHandlerService, BotSession {
 
     private final SenderServiceBean sender;
+
+    private final ButtonServiceBean buttons;
 
     private final TopicServiceBean topicServiceBean;
 
@@ -47,7 +49,7 @@ public class QuestionsListServiceBean implements ActionHandlerService, Buttonabl
         //QuestionSession q = questionsSessions.get(chatID);
         //q.setTopic(topic);
 
-        createKeyboard(request, defineKeyboard());
+        buttons.createKeyboard(request, defineKeyboard());
 
         sender.sendMessage(request, "Список питань 👇");
         defineQuestions(request);
@@ -77,8 +79,8 @@ public class QuestionsListServiceBean implements ActionHandlerService, Buttonabl
         questions.forEach(q -> sender.sendMessageWithButtons(
                 request,
                 q.getTitle(),
-                createInlineKeyboard(
-                        getKeyboardMap(Arrays.asList("\uD83D\uDD2E Відкрити відповідь", "Відкрити відповідь від питання " + "#" + q.getId()))
+                buttons.createInlineKeyboard(
+                        buttons.getKeyboardMap(Arrays.asList("\uD83D\uDD2E Відкрити відповідь", "Відкрити відповідь від питання " + "#" + q.getId()))
                 )));
     }
 

@@ -1,10 +1,11 @@
 package com.study.javaquestions.service.actionHandlers;
 
-import com.study.javaquestions.bot.Buttonable;
+import com.study.javaquestions.service.button.ButtonService;
 import com.study.javaquestions.bot.componenents.BotSession;
 import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.QuestionSession;
 import com.study.javaquestions.domain.Request;
+import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.level.LevelServiceBean;
 import com.study.javaquestions.service.questionSession.QuestionSessionServiceBean;
 import com.study.javaquestions.service.sender.SenderServiceBean;
@@ -17,9 +18,11 @@ import java.util.stream.Collectors;
 @Service
 //BotSession can be injected
 //Buttonable can be injected
-public class ChooseLevelServiceBean implements ActionHandlerService, Buttonable, BotSession {
+public class ChooseLevelServiceBean implements ActionHandlerService, BotSession {
 
     private final SenderServiceBean sender;
+
+    private final ButtonServiceBean buttons;
 
     private final QuestionSessionServiceBean questionSessionServiceBean;
 
@@ -33,9 +36,11 @@ public class ChooseLevelServiceBean implements ActionHandlerService, Buttonable,
     @Override
     public boolean mineCheck(Request request) {
         String requestValue = "Список питань";
+        String requestValueBack = "Повернутись до вибору рівня";
         String requestSession = "START";
-        return request.getSendMessage().getText().toLowerCase().endsWith(requestValue.toLowerCase()) &&
-                request.getStep().toLowerCase().startsWith(requestSession.toLowerCase());
+        return (request.getSendMessage().getText().toLowerCase().endsWith(requestValue.toLowerCase())
+                && request.getStep().toLowerCase().startsWith(requestSession.toLowerCase()))
+                || request.getSendMessage().getText().toLowerCase().endsWith(requestValueBack.toLowerCase());
     }
 
     @Override
@@ -46,7 +51,7 @@ public class ChooseLevelServiceBean implements ActionHandlerService, Buttonable,
         //questionsSessions.put(chatID, new QuestionSession(chatID));
         processQuestionSession(chatID);
 
-        createKeyboard(request, defineKeyboard());
+        buttons.createKeyboard(request, defineKeyboard());
         sender.sendMessage(request, "Обери рівень підготовки 👇");
     }
 
