@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ButtonServiceBean implements ButtonService{
@@ -26,40 +27,29 @@ public class ButtonServiceBean implements ButtonService{
         replyKeyboardMarkup.setOneTimeKeyboard(false);
 
         // The list of keyboard is created here
-        List<KeyboardRow> keyboard = new ArrayList<>();
-
-        for (String s : buttonsText) {
-            KeyboardRow keyboardRow = new KeyboardRow();
-            keyboardRow.add(new KeyboardButton(s));
-            keyboard.add(keyboardRow);
-        }
-
-        replyKeyboardMarkup.setKeyboard(keyboard);
+        replyKeyboardMarkup.setKeyboard(defineKeyboardButtons(buttonsText));
     }
 
     @Override
-    public InlineKeyboardMarkup createInlineKeyboard(/*Request R,*/ List<String> N, String callbackData){
+    public ReplyKeyboardMarkup createKeyboard(List<String> buttonsText){
 
-        //SendMessage SM = R.getSendMessage();
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
 
-        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
-        //SM.setReplyMarkup(inlineKeyboardMarkup);
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
 
-        List<InlineKeyboardButton> keyboardButtonList = new ArrayList<>();
+        // The list of keyboard is created here
+        replyKeyboardMarkup.setKeyboard(defineKeyboardButtons(buttonsText));
+        return replyKeyboardMarkup;
+    }
 
-        for (String s : N) {
-            InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
-            inlineKeyboardButton.setText(s);
-            inlineKeyboardButton.setCallbackData(callbackData);
-            keyboardButtonList.add(inlineKeyboardButton);
-        }
-
-        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
-        rowList.add(keyboardButtonList);
-
-        inlineKeyboardMarkup.setKeyboard(rowList);
-
-        return inlineKeyboardMarkup;
+    private List<KeyboardRow> defineKeyboardButtons(List<String> buttonsText) {
+        return buttonsText.stream().map(s -> {
+            KeyboardRow keyboardRow = new KeyboardRow();
+            keyboardRow.add(new KeyboardButton(s));
+            return keyboardRow;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -88,6 +78,30 @@ public class ButtonServiceBean implements ButtonService{
         return inlineKeyboardMarkup;
     }
 
+
+    @Override
+    public InlineKeyboardMarkup createInlineKeyboard(List<String> N){
+
+        InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
+
+        List<List<InlineKeyboardButton>> rowList = new ArrayList<>();
+
+        for (String s : N) {
+
+            List<InlineKeyboardButton> keyboardButtonList = new ArrayList<>();
+            rowList.add(keyboardButtonList);
+
+            InlineKeyboardButton inlineKeyboardButton = new InlineKeyboardButton();
+            inlineKeyboardButton.setText(s);
+            inlineKeyboardButton.setCallbackData(s);
+            keyboardButtonList.add(inlineKeyboardButton);
+        }
+
+        inlineKeyboardMarkup.setKeyboard(rowList);
+
+        return inlineKeyboardMarkup;
+    }
+
     @Override
     public Map<String, String> getKeyboardMap(List<String> mapInlined) {
 
@@ -96,9 +110,8 @@ public class ButtonServiceBean implements ButtonService{
 
         Map<String, String> a = new HashMap<>();
 
-        for (int i = 1; i < mapInlined.size(); i+=2) {
+        for (int i = 1; i < mapInlined.size(); i+=2)
             a.put(mapInlined.get(i-1), mapInlined.get(i));
-        }
 
         return a;
     }

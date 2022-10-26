@@ -3,6 +3,7 @@ package com.study.javaquestions.service.actionHandlers;
 import com.study.javaquestions.bot.componenents.BotSession;
 import com.study.javaquestions.domain.*;
 import com.study.javaquestions.service.button.ButtonServiceBean;
+import com.study.javaquestions.service.button.KeyboardButtons;
 import com.study.javaquestions.service.question.QuestionServiceBean;
 import com.study.javaquestions.service.questionSession.QuestionSessionServiceBean;
 import com.study.javaquestions.service.sender.SenderServiceBean;
@@ -15,8 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 //BotSession can be injected
-//Buttonable can be injected
-public class QuestionsListServiceBean implements ActionHandlerService, BotSession {
+public class QuestionsListServiceBean implements ActionHandlerService, BotSession, Showable<List<Question>>, KeyboardButtons {
 
     private final SenderServiceBean sender;
 
@@ -36,7 +36,9 @@ public class QuestionsListServiceBean implements ActionHandlerService, BotSessio
     @Override
     public boolean mineCheck(Request request) {
         String requestValue = "CHOOSE TOPIC AND SHOW LIST";
-        return request.getStep().toLowerCase().endsWith(requestValue.toLowerCase());
+        String requestValueBack = "Повернутись до списку питань";
+        return request.getStep().toLowerCase().endsWith(requestValue.toLowerCase())
+                || request.getSendMessage().getText().toLowerCase().endsWith(requestValueBack.toLowerCase());
     }
 
     @Override
@@ -44,51 +46,64 @@ public class QuestionsListServiceBean implements ActionHandlerService, BotSessio
         String chatID = request.getSendMessage().getChatId();
         sessions.put(chatID, "QUESTIONS LIST");
 
+        //checkQuestionSession Map if there is such topic, so download it.
+        //If no, try to download from db further and set a Topic in QuestionSession
+
         Topic topic = defineTopic(request.getSendMessage().getText());
         processQuestionSession(topic, chatID);
         //QuestionSession q = questionsSessions.get(chatID);
         //q.setTopic(topic);
 
-        buttons.createKeyboard(request, defineKeyboard());
-
-        sender.sendMessage(request, "Список питань 👇");
-        defineQuestions(request);
+        showKeyboardButtons(request, "Список питань з теми *" + topic.getName() + "*");
+        defineRequest(request);
     }
 
     private void processQuestionSession(Topic topic, String chatID) {
         questionSessionServiceBean.updateTopicByChatId(chatID, topic);
     }
 
-    private void defineQuestions(Request request) {
+    private Topic defineTopic(String topicName) {
+        return topicServiceBean.getByName(topicName);
+    }
+
+    @Override
+    public void showKeyboardButtons(Request request, String text) {
+        sender.sendMessageWithButtons(
+                request,
+                text,
+                buttons.createKeyboard(defineKeyboard())
+        );
+    }
+
+    @Override
+    public List<String> defineKeyboard() {
+        return List.of("🔙 Повернутись до вибору рівня");
+    }
+
+    @Override
+    public void defineRequest(Request request) {
         try {
             List<Question> questions = questionServiceBean.getQuestionsListByLevelAndTopic(request.getSendMessage().getChatId());
-            if (questions.size() == 0) noQuestionsToShow(request);
-            else showQuestions(questions, request);
+            if (questions.size() == 0) nothingToShow(request);
+            else show(questions, request);
         } catch (Exception e) {
             sender.sendMessage(request, "Не можу завантажити питання \uD83E\uDD37");
             e.printStackTrace();
         }
     }
 
-    private synchronized void noQuestionsToShow(Request request) {
+    @Override
+    public void nothingToShow(Request request) {
         sender.sendMessage(request, "В цій категорії ще немає питань \uD83E\uDD37");
     }
 
-    private void showQuestions(List<Question> questions, Request request) {
-
+    @Override
+    public void show(List<Question> questions, Request request) {
         questions.forEach(q -> sender.sendMessageWithButtons(
                 request,
                 q.getTitle(),
                 buttons.createInlineKeyboard(
-                        buttons.getKeyboardMap(Arrays.asList("\uD83D\uDD2E Відкрити відповідь", "Відкрити відповідь від питання " + "#" + q.getId()))
+                        buttons.getKeyboardMap(Arrays.asList("\uD83D\uDD2E Відкрити відповідь", "Відкрити відповідь на питання " + "#" + q.getId()))
                 )));
-    }
-
-    private Topic defineTopic(String topicName) {
-        return topicServiceBean.getByName(topicName);
-    }
-
-    public List<String> defineKeyboard() {
-        return List.of("🔙 Повернутись до головного меню");
     }
 }
