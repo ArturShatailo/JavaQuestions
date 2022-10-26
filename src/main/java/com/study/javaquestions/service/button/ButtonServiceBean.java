@@ -9,6 +9,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ButtonServiceBean implements ButtonService{
@@ -26,15 +27,29 @@ public class ButtonServiceBean implements ButtonService{
         replyKeyboardMarkup.setOneTimeKeyboard(false);
 
         // The list of keyboard is created here
-        List<KeyboardRow> keyboard = new ArrayList<>();
+        replyKeyboardMarkup.setKeyboard(defineKeyboardButtons(buttonsText));
+    }
 
-        for (String s : buttonsText) {
+    @Override
+    public ReplyKeyboardMarkup createKeyboard(List<String> buttonsText){
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+
+        // The list of keyboard is created here
+        replyKeyboardMarkup.setKeyboard(defineKeyboardButtons(buttonsText));
+        return replyKeyboardMarkup;
+    }
+
+    private List<KeyboardRow> defineKeyboardButtons(List<String> buttonsText) {
+        return buttonsText.stream().map(s -> {
             KeyboardRow keyboardRow = new KeyboardRow();
             keyboardRow.add(new KeyboardButton(s));
-            keyboard.add(keyboardRow);
-        }
-
-        replyKeyboardMarkup.setKeyboard(keyboard);
+            return keyboardRow;
+        }).collect(Collectors.toList());
     }
 
     @Override
@@ -64,6 +79,7 @@ public class ButtonServiceBean implements ButtonService{
     }
 
 
+    @Override
     public InlineKeyboardMarkup createInlineKeyboard(List<String> N){
 
         InlineKeyboardMarkup inlineKeyboardMarkup = new InlineKeyboardMarkup();
@@ -94,9 +110,8 @@ public class ButtonServiceBean implements ButtonService{
 
         Map<String, String> a = new HashMap<>();
 
-        for (int i = 1; i < mapInlined.size(); i+=2) {
+        for (int i = 1; i < mapInlined.size(); i+=2)
             a.put(mapInlined.get(i-1), mapInlined.get(i));
-        }
 
         return a;
     }

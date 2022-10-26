@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -22,6 +23,11 @@ public class QuestionServiceBean {
         QuestionSession questionSession = questionSessionRepository.getByChatID(chatID);
         return questionRepository.findQuestionsByLevelAndTopic(
                 questionSession.getLevel(), questionSession.getTopic());
+    }
+
+    public Question getById (Long id){
+        return questionRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Can't find Question with id = " + id));
     }
 
 
