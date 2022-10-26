@@ -1,22 +1,24 @@
-package com.study.javaquestions.service.actionHandlers;
+package com.study.javaquestions.service;
 
 import com.study.javaquestions.bot.componenents.BotSession;
 import com.study.javaquestions.bot.componenents.QuestionMenuSession;
 import com.study.javaquestions.domain.QuestionSession;
 import com.study.javaquestions.domain.Request;
+import com.study.javaquestions.service.actionHandlers.ActionHandlerService;
 import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.button.KeyboardButtons;
 import com.study.javaquestions.service.questionSession.QuestionSessionServiceBean;
 import com.study.javaquestions.service.sender.SenderServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
 @Service
 //BotSession can be injected
-public class QuestionsListServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String> {
+public class AddQuestionServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String> {
 
     private final SenderServiceBean sender;
 
@@ -32,7 +34,7 @@ public class QuestionsListServiceBean implements ActionHandlerService, BotSessio
     @Override
     public boolean mineCheck(Request request) {
         String requestSessionValue = "START";
-        String requestValue = "Список питань";
+        String requestValue = "Додати питання";
         return request.getStep().toLowerCase().endsWith(requestSessionValue.toLowerCase())
                 && request.getSendMessage().getText().toLowerCase().endsWith(requestValue.toLowerCase());
     }

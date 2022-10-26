@@ -37,9 +37,9 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession,
 
     @Override
     public boolean mineCheck(Request request) {
-        String requestValue = "Список питань";
+        String requestValue = "Обрати рівень підготовки";
         String requestValueBack = "Повернутись до вибору рівня";
-        String requestSession = "START";
+        String requestSession = "QUESTIONS";
         return (request.getSendMessage().getText().toLowerCase().endsWith(requestValue.toLowerCase())
                 && request.getStep().toLowerCase().startsWith(requestSession.toLowerCase()))
                 || request.getSendMessage().getText().toLowerCase().endsWith(requestValueBack.toLowerCase());
@@ -70,7 +70,7 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession,
     public void showInlineButtons(Collection<Level> levels, Request request) {
         sender.sendMessageWithButtons(
                 request,
-                "Обери рівень підготовки 📊",
+                "Обери рівень з представлених нижче 📊",
                 buttons.createInlineKeyboard(
                         levels.stream()
                                 .map(Level::getName)
