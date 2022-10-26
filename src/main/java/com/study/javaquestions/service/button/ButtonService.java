@@ -12,8 +12,6 @@ public interface ButtonService {
 
     ReplyKeyboardMarkup createKeyboardColumns(List<String> buttonsText);
 
-
-
     ReplyKeyboardMarkup createKeyboard(List<String> buttonsText);
 
     InlineKeyboardMarkup createInlineKeyboard(Map<String, String> N);
