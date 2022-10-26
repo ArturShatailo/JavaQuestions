@@ -1,6 +1,7 @@
 package com.study.javaquestions.service.actionHandlers;
 
 import com.study.javaquestions.bot.componenents.BotSession;
+import com.study.javaquestions.bot.componenents.QuestionMenuSession;
 import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.QuestionSession;
 import com.study.javaquestions.domain.Request;
@@ -12,7 +13,6 @@ import com.study.javaquestions.service.questionSession.QuestionSessionServiceBea
 import com.study.javaquestions.service.sender.SenderServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 //BotSession can be injected
-public class ChooseLevelServiceBean implements ActionHandlerService, BotSession, KeyboardButtons, InlineKeyboardButtons<Level> {
+public class ChooseLevelServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String>, InlineKeyboardButtons<Level> {
 
     private final SenderServiceBean sender;
 
@@ -53,12 +53,17 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession,
         //questionsSessions.put(chatID, new QuestionSession(chatID));
         processQuestionSession(chatID);
 
-        showKeyboardButtons(request, "Дякую, *" + request.getUser().getFirstName() + "* 🙂");
+        showKeyboardButtons(request,
+                "Дякую, *" + request.getUser().getFirstName() + "* 🙂",
+                List.of("🔙 Повернутись до головного меню"));
+
         showInlineButtons(getLevels(), request);
     }
 
     private void processQuestionSession(String chatID) {
-        questionSessionServiceBean.create(new QuestionSession(chatID));
+        QuestionSession questionSession = new QuestionSession(chatID);
+        questionsSessions.put(chatID, questionSession);
+        questionSessionServiceBean.create(questionSession);
     }
 
     @Override
@@ -78,17 +83,12 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession,
     }
 
     @Override
-    public void showKeyboardButtons(Request request, String text) {
+    public void showKeyboardButtons(Request request, String text, List<String> buttonsText) {
         sender.sendMessageWithButtons(
                 request,
                 text,
-                buttons.createKeyboard(defineKeyboard())
+                buttons.createKeyboard(buttonsText)
         );
-    }
-
-    @Override
-    public List<String> defineKeyboard() {
-        return List.of("🔙 Повернутись до головного меню");
     }
 
 

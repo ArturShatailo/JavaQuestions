@@ -1,6 +1,7 @@
 package com.study.javaquestions.service.actionHandlers;
 
 import com.study.javaquestions.bot.componenents.BotSession;
+import com.study.javaquestions.bot.componenents.QuestionMenuSession;
 import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.Topic;
 import com.study.javaquestions.service.button.ButtonServiceBean;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Service
 //BotSession can be injected
-public class ChooseTopicServiceBean implements ActionHandlerService, BotSession, KeyboardButtons, InlineKeyboardButtons<Topic> {
+public class ChooseTopicServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String>, InlineKeyboardButtons<Topic> {
 
     private final SenderServiceBean sender;
 
@@ -37,7 +38,9 @@ public class ChooseTopicServiceBean implements ActionHandlerService, BotSession,
     @Override
     public boolean mineCheck(Request request) {
         String requestSession = "CHOOSE LEVEL";
-        return request.getStep().toLowerCase().startsWith(requestSession.toLowerCase());
+        String requestValueBack = "Повернутись до вибору теми";
+        return request.getStep().toLowerCase().startsWith(requestSession.toLowerCase())
+                || request.getSendMessage().getText().toLowerCase().endsWith(requestValueBack.toLowerCase());
     }
 
     @Override
@@ -45,15 +48,21 @@ public class ChooseTopicServiceBean implements ActionHandlerService, BotSession,
         String chatID = request.getSendMessage().getChatId();
         sessions.put(chatID, "CHOOSE TOPIC AND SHOW LIST");
 
-        //checkQuestionSession Map if there is such level, so download it.
-        //If no, try to download from db further and set a Level in QuestionSession
-
-        Level level = defineLevel(request.getSendMessage().getText());
+        Level level = getChosen(request, chatID);
         processQuestionSession(level, chatID);
-        //questionsSessions.get(chatID).setLevel(level);
 
-        showKeyboardButtons(request, "Ти обрав *" + level.getName() + "*");
+        showKeyboardButtons(request,
+                "Ти обрав *" + level.getName() + "*",
+                List.of("🔙 Повернутись до вибору рівня"));
+
         showInlineButtons(level.getTopics(), request);
+    }
+
+    private Level getChosen(Request request, String chatID) {
+        return questionsSessions.containsKey(chatID)
+                && questionsSessions.get(chatID).getLevel() != null
+                ? questionsSessions.get(chatID).getLevel()
+                : defineLevel(request.getSendMessage().getText());
     }
 
     private Level defineLevel(String levelName) {
@@ -61,21 +70,18 @@ public class ChooseTopicServiceBean implements ActionHandlerService, BotSession,
     }
 
     private void processQuestionSession(Level level, String chatID) {
+        questionsSessions.get(chatID).setTopic(null);
+        questionsSessions.get(chatID).setLevel(level);
         questionSessionServiceBean.updateLevelByChatId(chatID, level);
     }
 
     @Override
-    public void showKeyboardButtons(Request request, String text) {
+    public void showKeyboardButtons(Request request, String text, List<String> buttonsText) {
         sender.sendMessageWithButtons(
                 request,
                 text,
-                buttons.createKeyboard(defineKeyboard())
+                buttons.createKeyboard(buttonsText)
         );
-    }
-
-    @Override
-    public List<String> defineKeyboard() {
-        return List.of("🔙 Повернутись до вибору рівня");
     }
 
     @Override

@@ -10,6 +10,8 @@ public interface ButtonService {
 
     void createKeyboard(Request request, List<String> buttonsText);
 
+    ReplyKeyboardMarkup createKeyboardColumns(List<String> buttonsText);
+
     ReplyKeyboardMarkup createKeyboard(List<String> buttonsText);
 
     InlineKeyboardMarkup createInlineKeyboard(Map<String, String> N);

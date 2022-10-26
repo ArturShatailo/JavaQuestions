@@ -44,6 +44,36 @@ public class ButtonServiceBean implements ButtonService{
         return replyKeyboardMarkup;
     }
 
+    public ReplyKeyboardMarkup createKeyboardColumns(List<String> buttonsText){
+
+        ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
+
+        replyKeyboardMarkup.setSelective(true);
+        replyKeyboardMarkup.setResizeKeyboard(true);
+        replyKeyboardMarkup.setOneTimeKeyboard(true);
+
+        // The list of keyboard is created here
+        replyKeyboardMarkup.setKeyboard(defineKeyboardColumnsButtons(buttonsText));
+        return replyKeyboardMarkup;
+    }
+
+    private List<KeyboardRow> defineKeyboardColumnsButtons(List<String> buttonsText) {
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+
+        if (buttonsText.size() == 1) return defineKeyboardButtons(buttonsText);
+        else if (buttonsText.size() % 2 != 0) buttonsText.add("null");
+
+        for (int i = 1; i < buttonsText.size(); i+=2) {
+            KeyboardRow keyboardRow = new KeyboardRow();
+            keyboardRow.add(new KeyboardButton(buttonsText.get(i-1)));
+            if ((buttonsText.get(i) != null))
+                keyboardRow.add(new KeyboardButton(buttonsText.get(i)));
+            keyboard.add(keyboardRow);
+        }
+        return keyboard;
+    }
+
     private List<KeyboardRow> defineKeyboardButtons(List<String> buttonsText) {
         return buttonsText.stream().map(s -> {
             KeyboardRow keyboardRow = new KeyboardRow();

@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 //BotSession can be injected
-public class StartBotServiceBean implements ActionHandlerService, BotSession, KeyboardButtons {
+public class StartBotServiceBean implements ActionHandlerService, BotSession, KeyboardButtons<String> {
 
     private final SenderServiceBean sender;
 
@@ -40,22 +40,17 @@ public class StartBotServiceBean implements ActionHandlerService, BotSession, Ke
         sessions.put(chatID, "START");
 
         showKeyboardButtons(request,
-                "Вітаю, радий тебе бачити \uD83D\uDE4B"+
-                "\nЧого бажаєш, розробнику?");
+                "Вітаю, радий тебе бачити \uD83D\uDE4B \nЧого бажаєш, розробнику?",
+                Arrays.asList("📋 Список питань", "💾 Збережені питання",
+                        "➕ Додати питання", "🗳 Емітація співбесіди"));
     }
 
     @Override
-    public void showKeyboardButtons(Request request, String text) {
+    public void showKeyboardButtons(Request request, String text, List<String> buttonsText) {
         sender.sendMessageWithButtons(
                 request,
                 text,
-                buttons.createKeyboard(defineKeyboard())
+                buttons.createKeyboard(buttonsText)
         );
-    }
-
-    @Override
-    public List<String> defineKeyboard() {
-        return Arrays.asList("📋 Список питань", "💾 Збережені питання",
-                "➕ Додати питання", "🗳 Емітація співбесіди");
     }
 }
