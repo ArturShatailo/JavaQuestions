@@ -1,9 +1,9 @@
 package com.study.javaquestions.bot;
 
-import com.study.javaquestions.bot.componenents.BotFactory;
-import com.study.javaquestions.bot.componenents.BotSession;
+import com.study.javaquestions.bot.session.BotSession;
+import com.study.javaquestions.bot.util.BotConfig;
 import com.study.javaquestions.controller.container.HandlerContainer;
-import com.study.javaquestions.service.sender.SenderServiceBean;
+import com.study.javaquestions.bot.sender.SenderServiceBean;
 import com.study.javaquestions.domain.Request;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,19 +17,21 @@ import org.telegram.telegrambots.meta.api.objects.User;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class JavaQuestionsBot extends TelegramLongPollingBot implements BotFactory, BotSession {
+public class JavaQuestionsBot extends TelegramLongPollingBot implements BotSession {
 
     private final SenderServiceBean sender;
     private final HandlerContainer hc;
 
+    private final BotConfig botConfig;
+
     @Override
     public String getBotUsername() {
-        return bot.getUsername();
+        return botConfig.botBean().getUsername();
     }
 
     @Override
     public String getBotToken() {
-        return bot.getToken();
+        return botConfig.botBean().getToken();
     }
 
     @Override
@@ -40,7 +42,7 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotFacto
         else if (update.hasCallbackQuery()) {
             update.getCallbackQuery().getMessage().setText(update.getCallbackQuery().getData());
             processMessage(update.getCallbackQuery().getMessage());
-        }else
+        } else
             log.warn("Unexpected update from user");
     }
 
@@ -72,14 +74,22 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotFacto
 
     private Request startRequest(SendMessage sendMessage, User from) {
         String session = sessions.get(sendMessage.getChatId());
+        String sessionStep = sessionSteps.get(sendMessage.getChatId());
         log.info("Get session request: {}", session);
-        return new Request(sendMessage, session != null ? session : "START", from);
+        log.info("Get sessionStep request: {}", sessionStep);
+        return new Request(
+                sendMessage,
+                sessionStep != null ? sessionStep : "START",
+                session != null ? session : "START",
+                from);
     }
 
     private synchronized void defineAction(Request request) {
 
-        if(!hc.chooseHandler(request)){
+        if (!hc.chooseHandler(request)){
 
+            sessions.put(request.getSendMessage().getChatId(), "START");
+            sessionSteps.put(request.getSendMessage().getChatId(), "START");
             sender.sendMessage(request, "Я не знаю цієї команди, вибач 🤷");
             sender.sendMessage(request, "/start");
 

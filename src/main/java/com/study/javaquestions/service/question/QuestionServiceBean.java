@@ -30,5 +30,13 @@ public class QuestionServiceBean {
                 .orElseThrow(() -> new NoSuchElementException("Can't find Question with id = " + id));
     }
 
-
+    public Question createFromQuestionSession(QuestionSession questionSession) {
+        Question question = new Question();
+        question.setTopic(questionSession.getTopic());
+        question.setLevel(questionSession.getLevel());
+        question.setTitle(questionSession.getTitle());
+        question.setAnswer(questionSession.getAnswer());
+        question.setHint(questionSession.getHint());
+        return questionRepository.save(question);
+    }
 }

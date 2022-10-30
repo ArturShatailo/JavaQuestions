@@ -38,4 +38,28 @@ public interface QuestionSessionRepository extends JpaRepository<QuestionSession
                     "WHERE q.chatID = :chatID")
     void updateTopicByChatId (String chatID, Topic topic);
 
+    @Transactional
+    @Modifying
+    @Query(value =
+            "UPDATE QuestionSession q " +
+                    "SET q.title = :title " +
+                    "WHERE q.chatID = :chatID")
+    void updateTitleByChatId(String chatID, String title);
+
+    @Transactional
+    @Modifying
+    @Query(value =
+            "UPDATE QuestionSession q " +
+                    "SET q.hint = :hint " +
+                    "WHERE q.chatID = :chatID")
+    void updateHintByChatId(String chatID, String hint);
+
+    @Transactional
+    @Modifying
+    @Query(value =
+            "UPDATE QuestionSession q " +
+                    "SET q.answer = :answer " +
+                    "WHERE q.chatID = :chatID")
+    void updateAnswerByChatId(String chatID, String answer);
+
 }

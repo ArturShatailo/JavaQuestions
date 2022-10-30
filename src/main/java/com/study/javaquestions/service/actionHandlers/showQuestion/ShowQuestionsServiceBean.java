@@ -1,13 +1,15 @@
-package com.study.javaquestions.service.actionHandlers;
+package com.study.javaquestions.service.actionHandlers.showQuestion;
 
-import com.study.javaquestions.bot.componenents.BotSession;
-import com.study.javaquestions.bot.componenents.QuestionMenuSession;
+import com.study.javaquestions.bot.session.BotSession;
+import com.study.javaquestions.bot.session.QuestionMenuSession;
 import com.study.javaquestions.domain.*;
+import com.study.javaquestions.service.actionHandlers.ActionHandlerService;
+import com.study.javaquestions.service.actionHandlers.Showable;
 import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.button.KeyboardButtons;
 import com.study.javaquestions.service.question.QuestionServiceBean;
 import com.study.javaquestions.service.questionSession.QuestionSessionServiceBean;
-import com.study.javaquestions.service.sender.SenderServiceBean;
+import com.study.javaquestions.bot.sender.SenderServiceBean;
 import com.study.javaquestions.service.topic.TopicServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 //BotSession can be injected
-public class QuestionsListServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, Showable<List<Question>>, KeyboardButtons<String> {
+public class ShowQuestionsServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, Showable<List<Question>>, KeyboardButtons<String> {
 
     private final SenderServiceBean sender;
 
@@ -36,16 +38,18 @@ public class QuestionsListServiceBean implements ActionHandlerService, BotSessio
 
     @Override
     public boolean mineCheck(Request request) {
-        String requestValue = "CHOOSE TOPIC AND SHOW LIST";
+        String requestSessionStep = "CHOOSE TOPIC";
+        String requestSessionValue = "SHOW_QUESTIONS";
         String requestValueBack = "Повернутись до списку питань";
-        return request.getStep().toLowerCase().endsWith(requestValue.toLowerCase())
-                || request.getSendMessage().getText().toLowerCase().endsWith(requestValueBack.toLowerCase());
+        return (request.getSessionStep().toLowerCase().endsWith(requestSessionStep.toLowerCase())
+                || request.getSendMessage().getText().toLowerCase().endsWith(requestValueBack.toLowerCase()))
+                && request.getStep().toLowerCase().endsWith(requestSessionValue.toLowerCase());
     }
 
     @Override
     public void sendRequest(Request request) {
         String chatID = request.getSendMessage().getChatId();
-        sessions.put(chatID, "QUESTIONS LIST");
+        sessionSteps.put(chatID, "QUESTIONS LIST");
 
         Topic topic = getChosen(request, chatID);
         processQuestionSession(topic, chatID);
