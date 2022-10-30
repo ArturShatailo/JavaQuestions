@@ -1,4 +1,4 @@
-package com.study.javaquestions.bot.componenents;
+package com.study.javaquestions.bot.session;
 
 import com.study.javaquestions.domain.QuestionSession;
 import java.util.HashMap;

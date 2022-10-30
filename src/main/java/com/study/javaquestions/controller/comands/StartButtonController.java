@@ -1,7 +1,8 @@
-package com.study.javaquestions.controller;
+package com.study.javaquestions.controller.comands;
 
-import com.study.javaquestions.bot.componenents.BotSession;
-import com.study.javaquestions.service.actionHandlers.StartBotServiceBean;
+import com.study.javaquestions.bot.session.BotSession;
+import com.study.javaquestions.controller.ActionHandler;
+import com.study.javaquestions.service.actionHandlers.comands.StartBotServiceBean;
 import com.study.javaquestions.domain.Request;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;

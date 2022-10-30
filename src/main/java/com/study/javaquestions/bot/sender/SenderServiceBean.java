@@ -1,4 +1,4 @@
-package com.study.javaquestions.service.sender;
+package com.study.javaquestions.bot.sender;
 
 import com.study.javaquestions.domain.Request;
 import lombok.AllArgsConstructor;

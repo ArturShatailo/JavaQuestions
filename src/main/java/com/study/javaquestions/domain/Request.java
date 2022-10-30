@@ -13,6 +13,8 @@ public class Request {
 
     private SendMessage sendMessage;
 
+    private String sessionStep;
+
     private String step;
 
     private User user;

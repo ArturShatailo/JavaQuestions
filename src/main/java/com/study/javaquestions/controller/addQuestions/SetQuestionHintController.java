@@ -1,15 +1,16 @@
-package com.study.javaquestions.controller;
+package com.study.javaquestions.controller.addQuestions;
 
-import com.study.javaquestions.service.actionHandlers.ShowQuestionsServiceBean;
+import com.study.javaquestions.controller.ActionHandler;
 import com.study.javaquestions.domain.Request;
+import com.study.javaquestions.service.actionHandlers.addQuestions.SetQuestionHintServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class ShowQuestionsController implements ActionHandler {
+public class SetQuestionHintController implements ActionHandler {
 
-    private final ShowQuestionsServiceBean serviceBean;
+    private final SetQuestionHintServiceBean serviceBean;
 
     @Override
     public int isGlobal() {

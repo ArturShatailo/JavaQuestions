@@ -1,11 +1,13 @@
-package com.study.javaquestions.service.actionHandlers;
+package com.study.javaquestions.service.actionHandlers.showQuestion;
 
-import com.study.javaquestions.bot.componenents.BotSession;
+import com.study.javaquestions.bot.session.BotSession;
 import com.study.javaquestions.domain.Question;
 import com.study.javaquestions.domain.Request;
+import com.study.javaquestions.service.actionHandlers.ActionHandlerService;
+import com.study.javaquestions.service.actionHandlers.Showable;
 import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.question.QuestionServiceBean;
-import com.study.javaquestions.service.sender.SenderServiceBean;
+import com.study.javaquestions.bot.sender.SenderServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -28,16 +30,16 @@ public class ShowAnswerServiceBean implements ActionHandlerService, BotSession, 
     @Override
     public boolean mineCheck(Request request) {
         String requestValue = "Відкрити відповідь на питання";
-        String requestSessionValue = "QUESTIONS LIST";
+        String requestSessionStep = "QUESTIONS LIST";
         return request.getSendMessage().getText().toLowerCase().startsWith(requestValue.toLowerCase())
-                && request.getStep().startsWith(requestSessionValue);
+                && request.getSessionStep().startsWith(requestSessionStep);
     }
 
     @Override
     public void sendRequest(Request request) {
         String chatID = request.getSendMessage().getChatId();
 
-        sessions.put(chatID, "QUESTIONS ANSWER");
+        sessionSteps.put(chatID, "QUESTIONS ANSWER");
 
         buttons.createKeyboard(request, defineKeyboard());
         defineRequest(request);

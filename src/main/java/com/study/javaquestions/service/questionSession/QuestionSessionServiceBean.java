@@ -52,4 +52,15 @@ public class QuestionSessionServiceBean {
         questionSessionRepository.updateTopicByChatId(chatID, topic);
     }
 
+    public void updateTitleByChatId(String chatID, String title) {
+        questionSessionRepository.updateTitleByChatId(chatID, title);
+    }
+
+    public void updateHintByChatId(String chatID, String title) {
+        questionSessionRepository.updateHintByChatId(chatID, title);
+    }
+
+    public void updateAnswerByChatId(String chatID, String title) {
+        questionSessionRepository.updateAnswerByChatId(chatID, title);
+    }
 }
