@@ -22,7 +22,11 @@ public class QuestionSessionServiceBean {
         } else {
             return questionSessionRepository.save(questionSession);
         }
+    }
 
+    public QuestionSession getByChatId(String chatId){
+        return questionSessionRepository.findQuestionSessionByChatID(chatId)
+                .orElseThrow(() -> new EntityNotFoundException("Question Session not found with chatId = " + chatId));
     }
 
     public QuestionSession updateById(Long id, QuestionSession q) {

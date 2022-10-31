@@ -1,6 +1,7 @@
 package com.study.javaquestions.service.question;
 
 import com.study.javaquestions.domain.Question;
+import com.study.javaquestions.domain.QuestionRequest;
 import com.study.javaquestions.domain.QuestionSession;
 import com.study.javaquestions.repository.QuestionRepository;
 import com.study.javaquestions.repository.QuestionSessionRepository;
@@ -30,13 +31,13 @@ public class QuestionServiceBean {
                 .orElseThrow(() -> new NoSuchElementException("Can't find Question with id = " + id));
     }
 
-    public Question createFromQuestionSession(QuestionSession questionSession) {
+    public Question createFromQuestionRequest(QuestionRequest questionRequest) {
         Question question = new Question();
-        question.setTopic(questionSession.getTopic());
-        question.setLevel(questionSession.getLevel());
-        question.setTitle(questionSession.getTitle());
-        question.setAnswer(questionSession.getAnswer());
-        question.setHint(questionSession.getHint());
+        question.setTopic(questionRequest.getTopic());
+        question.setLevel(questionRequest.getLevel());
+        question.setTitle(questionRequest.getTitle());
+        question.setAnswer(questionRequest.getAnswer());
+        question.setHint(questionRequest.getHint());
         return questionRepository.save(question);
     }
 }

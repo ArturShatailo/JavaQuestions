@@ -6,6 +6,7 @@ import com.study.javaquestions.service.actionHandlers.ActionHandlerService;
 import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.button.KeyboardButtons;
 import com.study.javaquestions.bot.sender.SenderServiceBean;
+import com.study.javaquestions.service.client.ClientServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Arrays;
@@ -19,6 +20,8 @@ public class StartBotServiceBean implements ActionHandlerService, BotSession, Ke
     private final SenderServiceBean sender;
 
     private final ButtonServiceBean buttons;
+
+    private final ClientServiceBean clientServiceBean;
 
     @Override
     public int globalCheck() {
@@ -41,10 +44,19 @@ public class StartBotServiceBean implements ActionHandlerService, BotSession, Ke
         sessions.put(chatID, "START");
         sessionSteps.put(chatID, "START");
 
+        processRequest(request);
+
         showKeyboardButtons(request,
                 "Вітаю, радий тебе бачити \uD83D\uDE4B \nЧого бажаєш, розробнику?",
                 Arrays.asList("📋 Список питань", "💾 Збережені питання",
                         "➕ Додати питання", "🗳 Емітація співбесіди"));
+    }
+
+    private void processRequest(Request request) {
+        clientServiceBean.createFromUser(
+                request.getUser(),
+                request.getSendMessage().getChatId()
+        );
     }
 
     @Override

@@ -18,5 +18,4 @@ public class Request {
     private String step;
 
     private User user;
-
 }
