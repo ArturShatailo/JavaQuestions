@@ -9,6 +9,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface QuestionSessionRepository extends JpaRepository<QuestionSession, Long> {
 
@@ -62,4 +64,5 @@ public interface QuestionSessionRepository extends JpaRepository<QuestionSession
                     "WHERE q.chatID = :chatID")
     void updateAnswerByChatId(String chatID, String answer);
 
+    Optional<QuestionSession> findQuestionSessionByChatID(String chatId);
 }
