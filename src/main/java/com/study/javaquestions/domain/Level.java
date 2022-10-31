@@ -1,5 +1,6 @@
 package com.study.javaquestions.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
@@ -17,6 +18,7 @@ public class Level {
 
     private String name;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "level_id")
     private Set<Topic> topics;

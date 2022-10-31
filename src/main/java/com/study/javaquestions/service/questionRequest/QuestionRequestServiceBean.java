@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -18,6 +19,10 @@ public class QuestionRequestServiceBean {
 
     public QuestionRequest create(QuestionRequest questionRequest) {
         return questionRequestRepository.save(questionRequest);
+    }
+
+    public List<QuestionRequest> getAll() {
+        return questionRequestRepository.findAll();
     }
 
     public QuestionRequest createFromQuestionSession(QuestionSession qs) {
