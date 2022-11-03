@@ -39,7 +39,7 @@ public class InterviewStartServiceBean implements ActionHandlerService, BotSessi
 
         showKeyboardButtons(request,
                 "Are you ready to розпочати співбесіду?",
-                List.of("Yeah! let the interview begin", "🔙 Повернутись до головного меню"));
+                List.of("Yeah!", "Not ready, but let's start", "Noooo God! No! God, please, no!", "🔙 Повернутись до головного меню"));
     }
 
     @Override

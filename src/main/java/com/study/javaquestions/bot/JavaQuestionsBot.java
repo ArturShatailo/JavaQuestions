@@ -40,10 +40,24 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotSessi
         if (update.hasMessage() && update.getMessage().hasText())
             processMessage(update.getMessage());
         else if (update.hasCallbackQuery()) {
-            update.getCallbackQuery().getMessage().setText(update.getCallbackQuery().getData());
-            processMessage(update.getCallbackQuery().getMessage());
+
+            processMessage(
+                    update.getCallbackQuery().getMessage(),
+                    update.getCallbackQuery().getData());
+//            update.getCallbackQuery().getMessage().setText(update.getCallbackQuery().getData());
+//            processMessage(update.getCallbackQuery().getMessage());
         } else
             log.warn("Unexpected update from user");
+    }
+
+    private void processMessage(Message message, String text) {
+
+        User from = message.getFrom();
+
+        SendMessage sendMessage = createSendMessage(message);
+        sendMessage.setText(text);
+        Request request = startRequest(message, sendMessage, from);
+        defineAction(request);
     }
 
     private void processMessage(Message message) {
@@ -51,7 +65,7 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotSessi
         User from = message.getFrom();
 
         SendMessage sendMessage = createSendMessage(message);
-        Request request = startRequest(sendMessage, from);
+        Request request = startRequest(message, sendMessage, from);
         defineAction(request);
     }
 
@@ -72,13 +86,14 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotSessi
         return sendMessage;
     }
 
-    private Request startRequest(SendMessage sendMessage, User from) {
+    private Request startRequest(Message message, SendMessage sendMessage, User from) {
         String session = sessions.get(sendMessage.getChatId());
         String sessionStep = sessionSteps.get(sendMessage.getChatId());
         log.info("Get session request: {}", session);
         log.info("Get sessionStep request: {}", sessionStep);
         return new Request(
                 sendMessage,
+                message,
                 sessionStep != null ? sessionStep : "START",
                 session != null ? session : "START",
                 from);
