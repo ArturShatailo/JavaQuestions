@@ -1,4 +1,4 @@
-package com.study.javaquestions.service.actionHandlers.interview;
+package com.study.javaquestions.service.actionHandlers.passInterview;
 
 import com.study.javaquestions.bot.sender.SenderServiceBean;
 import com.study.javaquestions.bot.session.BotSession;
@@ -8,7 +8,6 @@ import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.button.KeyboardButtons;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -48,22 +47,14 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
         //inputted as an answer.
 
 
-        //Interview
-        //Long id
-        //List<InterviewQuestion> questions
-
-        //InterviewQuestion
-        //Long id
-        //Question question
-        //String answer
-
-
         showKeyboardButtons(request,
                 "Зараз я буду тобі надсилати питання, а ти маєш відпривляти мені відповіді у повідомленні. " +
                         "В кінці співбесіди, ти зможеш самостійно оцінити наскільки ти впорався, я надам тобі список" +
                         "всіх пройдених питань та відповіді на них, різом із твоїм варіантом для порівняння.",
                 List.of("Показати перше питання", "🔙 Повернутись до головного меню"));
     }
+
+
 
     @Override
     public void showKeyboardButtons(Request request, String text, List<String> buttonsText) {

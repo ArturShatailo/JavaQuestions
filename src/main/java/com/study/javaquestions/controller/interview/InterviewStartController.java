@@ -2,7 +2,7 @@ package com.study.javaquestions.controller.interview;
 
 import com.study.javaquestions.controller.ActionHandler;
 import com.study.javaquestions.domain.Request;
-import com.study.javaquestions.service.actionHandlers.interview.InterviewStartServiceBean;
+import com.study.javaquestions.service.actionHandlers.passInterview.InterviewStartServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 

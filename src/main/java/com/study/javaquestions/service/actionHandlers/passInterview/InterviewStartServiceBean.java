@@ -1,4 +1,4 @@
-package com.study.javaquestions.service.actionHandlers.interview;
+package com.study.javaquestions.service.actionHandlers.passInterview;
 
 import com.study.javaquestions.bot.sender.SenderServiceBean;
 import com.study.javaquestions.bot.session.BotSession;
