@@ -1,8 +1,6 @@
 package com.study.javaquestions.service.question;
 
-import com.study.javaquestions.domain.Question;
-import com.study.javaquestions.domain.QuestionRequest;
-import com.study.javaquestions.domain.QuestionSession;
+import com.study.javaquestions.domain.*;
 import com.study.javaquestions.repository.QuestionRepository;
 import com.study.javaquestions.repository.QuestionSessionRepository;
 import lombok.AllArgsConstructor;
@@ -20,10 +18,16 @@ public class QuestionServiceBean {
     private final QuestionSessionRepository questionSessionRepository;
 
     @Transactional
-    public List<Question> getQuestionsListByLevelAndTopic(String chatID){
+    public List<Question> getQuestionsListByLevelAndTopicFromQuestionSession(String chatID){
         QuestionSession questionSession = questionSessionRepository.getByChatID(chatID);
         return questionRepository.findQuestionsByLevelAndTopic(
                 questionSession.getLevel(), questionSession.getTopic());
+    }
+
+    @Transactional
+    public List<Question> getQuestionsListByLevelAndTopic(Level level, Topic topic){
+        return questionRepository.findQuestionsByLevelAndTopic(
+                level, topic);
     }
 
     public Question getById (Long id){

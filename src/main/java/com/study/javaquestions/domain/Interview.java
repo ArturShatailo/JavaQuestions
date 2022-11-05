@@ -20,6 +20,8 @@ public class Interview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String chatID;
+
     @OneToMany(cascade = CascadeType.MERGE)
     List<QuestionInterview> questions;
 
