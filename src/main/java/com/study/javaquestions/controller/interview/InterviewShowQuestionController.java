@@ -2,15 +2,15 @@ package com.study.javaquestions.controller.interview;
 
 import com.study.javaquestions.controller.ActionHandler;
 import com.study.javaquestions.domain.Request;
-import com.study.javaquestions.service.actionHandlers.passInterview.InterviewStartServiceBean;
+import com.study.javaquestions.service.actionHandlers.passInterview.InterviewShowQuestionServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class InterviewStartController implements ActionHandler {
+public class InterviewShowQuestionController implements ActionHandler {
 
-    private final InterviewStartServiceBean serviceBean;
+    private final InterviewShowQuestionServiceBean serviceBean;
 
     @Override
     public int isGlobal() {

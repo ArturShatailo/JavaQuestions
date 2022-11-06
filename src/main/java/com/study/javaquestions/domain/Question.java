@@ -25,7 +25,7 @@ public class Question {
     @ManyToOne(cascade = CascadeType.MERGE)
     private Topic topic;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Level level;
 
     @Override

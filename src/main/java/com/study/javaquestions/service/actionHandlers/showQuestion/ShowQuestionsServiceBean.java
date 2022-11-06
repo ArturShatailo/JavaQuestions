@@ -87,7 +87,8 @@ public class ShowQuestionsServiceBean implements ActionHandlerService, BotSessio
     @Override
     public void defineRequest(Request request) {
         try {
-            List<Question> questions = questionServiceBean.getQuestionsListByLevelAndTopic(request.getSendMessage().getChatId());
+            List<Question> questions = questionServiceBean
+                    .getQuestionsListByLevelAndTopicFromQuestionSession(request.getSendMessage().getChatId());
             if (questions.size() == 0) nothingToShow(request);
             else show(questions, request);
         } catch (Exception e) {
