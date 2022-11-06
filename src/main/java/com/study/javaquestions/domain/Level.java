@@ -19,7 +19,7 @@ public class Level {
     private String name;
 
     @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "level_id")
     private Set<Topic> topics;
 }
