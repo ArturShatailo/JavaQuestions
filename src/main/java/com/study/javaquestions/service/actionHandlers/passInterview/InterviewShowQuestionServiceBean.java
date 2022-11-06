@@ -5,20 +5,14 @@ import com.study.javaquestions.bot.session.BotSession;
 import com.study.javaquestions.domain.*;
 import com.study.javaquestions.service.actionHandlers.ActionHandlerService;
 import com.study.javaquestions.service.actionHandlers.Showable;
-import com.study.javaquestions.service.answer.AnswerServiceBean;
 import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.button.KeyboardButtons;
 import com.study.javaquestions.service.interview.InterviewServiceBean;
-import com.study.javaquestions.service.level.LevelServiceBean;
-import com.study.javaquestions.service.question.QuestionServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -51,11 +45,10 @@ public class InterviewShowQuestionServiceBean implements ActionHandlerService, B
         String chatID = request.getSendMessage().getChatId();
         sessionSteps.put(chatID, "NEW INTERVIEW STARTED");
 
-        defineRequest(request);
-
         showKeyboardButtons(request,
                 "Добре, " + request.getUser().getFirstName(),
                 List.of("Показати наступне питання", "🔙 Повернутись до головного меню"));
+        defineRequest(request);
     }
 
     @Override

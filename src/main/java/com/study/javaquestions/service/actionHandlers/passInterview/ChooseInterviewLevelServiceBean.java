@@ -64,6 +64,8 @@ public class ChooseInterviewLevelServiceBean implements ActionHandlerService, Bo
         interview.setChatID(chatID);
         if (interviewServiceBean.getByChatID(chatID) == null) {
             interviewServiceBean.create(interview);
+        } else {
+            interviewServiceBean.updateByChatID(chatID, interview);
         }
     }
 

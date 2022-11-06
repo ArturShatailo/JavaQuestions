@@ -38,4 +38,7 @@ public class InterviewServiceBean {
                 .orElse(null);
     }
 
+    public void updateByChatID(String chatID, Interview interview) {
+        updateById(getByChatID(chatID).getId(), interview);;
+    }
 }
