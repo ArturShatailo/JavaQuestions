@@ -9,6 +9,7 @@ import com.study.javaquestions.service.button.KeyboardButtons;
 import com.study.javaquestions.service.interview.InterviewServiceBean;
 import com.study.javaquestions.service.level.LevelServiceBean;
 import com.study.javaquestions.service.question.QuestionServiceBean;
+import com.study.javaquestions.service.answer.AnswerServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,8 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
     private final InterviewServiceBean interviewServiceBean;
 
     private final QuestionServiceBean questionServiceBean;
+
+    private final AnswerServiceBean answerServiceBean;
 
     @Override
     public int globalCheck() {
@@ -65,23 +68,29 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
 
     private void defineRequest(Request request) {
 
+        String chatID = request.getSendMessage().getChatId();
+
         List<Question> questions = new ArrayList<>();
-        Interview interview = interviewServiceBean.getByChatID(request.getSendMessage().getChatId());
+        Interview interview = interviewServiceBean.getByChatID(chatID);
         Level level = getChosen(request);
         Set<Topic> topics = level.getTopics();
+
         topics.forEach(q ->
                 questions.addAll(questionServiceBean.getQuestionsListByLevelAndTopic(level, q))
         );
 
-        interview.setQuestions(
-                questions.stream()
-                        .map(question -> {
-                            QuestionInterview q = new QuestionInterview();
-                            q.setQuestion(question);
-                            return q;
-                        })
-                        .collect(Collectors.toList())
-        );
+        interview.setQuestions(questions);
+
+//        interview.setAnswers(
+//                questions.stream()
+//                        .map(a -> {
+//                            Answer answer = new Answer();
+//                            answer.setQuestion(a);
+//                            answer.setChatID(chatID);
+//                            return answerServiceBean.create(answer);
+//                        })
+//                        .collect(Collectors.toList())
+//        );
 
         interviewServiceBean.updateById(interview.getId(), interview);
 

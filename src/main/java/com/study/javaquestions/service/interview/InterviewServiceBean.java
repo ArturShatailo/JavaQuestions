@@ -33,7 +33,7 @@ public class InterviewServiceBean {
 
     public Interview getByChatID(String chatID) {
         return interviewRepository.findInterviewByChatID(chatID)
-                .orElseThrow(() -> new NoSuchElementException("Interview with chatID: "+chatID+" was not found"));
+                .orElse(null);
     }
 
 }

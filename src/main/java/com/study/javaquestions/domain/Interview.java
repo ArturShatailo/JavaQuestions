@@ -1,12 +1,10 @@
 package com.study.javaquestions.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Map;
 
 @Table(name = "interviews")
 @Entity
@@ -22,7 +20,9 @@ public class Interview {
 
     private String chatID;
 
-    @OneToMany(cascade = CascadeType.MERGE)
-    List<QuestionInterview> questions;
+    @ManyToMany(cascade = CascadeType.MERGE)
+    List<Question> questions;
 
+    @ManyToMany(cascade = CascadeType.MERGE)
+    List<Answer> answers;
 }
