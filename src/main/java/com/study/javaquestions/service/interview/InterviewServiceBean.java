@@ -22,6 +22,8 @@ public class InterviewServiceBean {
                 i -> {
                     i.setChatID(interview.getChatID());
                     i.setQuestions(interview.getQuestions());
+                    i.setMaxQuestion(interview.getMaxQuestion());
+                    i.setCurrentQuestion(interview.getCurrentQuestion());
                     return interviewRepository.save(i);
                 }
         );

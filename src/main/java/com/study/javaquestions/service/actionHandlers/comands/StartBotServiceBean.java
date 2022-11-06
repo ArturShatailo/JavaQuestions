@@ -32,10 +32,13 @@ public class StartBotServiceBean implements ActionHandlerService, BotSession, Ke
     public boolean mineCheck(Request request) {
         String requestValue = "/start";
         String requestValueBack = "Повернутись до головного меню";
+        String requestValueBack1 = "Noooo God! No! God, please, no!";
         return request.getSendMessage().getText().toLowerCase()
-                .endsWith(requestValue.toLowerCase()) ||
+                        .endsWith(requestValue.toLowerCase()) ||
                 request.getSendMessage().getText().toLowerCase()
-                        .endsWith(requestValueBack.toLowerCase());
+                        .endsWith(requestValueBack.toLowerCase()) ||
+                request.getSendMessage().getText().toLowerCase()
+                        .endsWith(requestValueBack1.toLowerCase());
     }
 
     @Override
