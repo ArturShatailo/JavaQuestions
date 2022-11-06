@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
-public class InterviewBeginningServiceBean implements ActionHandlerService, BotSession, KeyboardButtons<String> {
+public class InterviewBeginningServiceBean implements ActionHandlerService, BotSession, KeyboardButtons<String>{
 
     private final SenderServiceBean sender;
 
@@ -54,33 +54,20 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
         sessionSteps.put(chatID, "NEW INTERVIEW STARTED");
 
         defineRequest(request);
-        //define all the questions (random 1-4 from each topic)
-        //this list of questions should be saved in database as an Interview
-        //the answers list should be saved as a map where key is question id and value is String
-        //inputted as an answer.
 
         showKeyboardButtons(request,
                 "Зараз я буду тобі надсилати питання, а ти маєш відпривляти мені відповіді у повідомленні. " +
                         "В кінці співбесіди, ти зможеш самостійно оцінити наскільки ти впорався, я надам тобі список" +
                         "всіх пройдених питань та відповіді на них, різом із твоїм варіантом для порівняння.",
-                List.of("Показати перше питання", "🔙 Повернутись до головного меню"));
+                List.of("Показати перше питання", "🔙 Noooo God! No! God, please, no!"));
     }
 
     private void defineRequest(Request request) {
-
         String chatID = request.getSendMessage().getChatId();
 
-        List<Question> questions = new ArrayList<>();
         Interview interview = interviewServiceBean.getByChatID(chatID);
-        Level level = getChosen(request);
-        Set<Topic> topics = level.getTopics();
-
-        topics.forEach(q ->
-                questions.addAll(questionServiceBean.getQuestionsListByLevelAndTopic(level, q))
-        );
-
-        interview.setQuestions(questions);
-
+        interview.setQuestions(defineQuestions(request));
+        interview.setMaxQuestion(interview.getQuestions().size());
 //        interview.setAnswers(
 //                questions.stream()
 //                        .map(a -> {
@@ -91,9 +78,17 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
 //                        })
 //                        .collect(Collectors.toList())
 //        );
-
         interviewServiceBean.updateById(interview.getId(), interview);
+    }
 
+    private List<Question> defineQuestions(Request request) {
+        List<Question> questions = new ArrayList<>();
+        Level level = getChosen(request);
+        Set<Topic> topics = level.getTopics();
+        topics.forEach(q ->
+                questions.addAll(questionServiceBean.getQuestionsListByLevelAndTopic(level, q))
+        );
+        return questions;
     }
 
     private Level getChosen(Request request) {
