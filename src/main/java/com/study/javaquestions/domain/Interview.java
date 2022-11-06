@@ -1,11 +1,8 @@
 package com.study.javaquestions.domain;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 @Table(name = "interviews")
 @Entity
@@ -25,10 +22,10 @@ public class Interview {
 
     private Integer maxQuestion;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     List<Question> questions;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     List<Answer> answers;
 
     public Question defineCurrentQuestion(){

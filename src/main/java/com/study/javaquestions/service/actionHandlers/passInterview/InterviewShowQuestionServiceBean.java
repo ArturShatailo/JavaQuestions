@@ -13,6 +13,7 @@ import com.study.javaquestions.service.level.LevelServiceBean;
 import com.study.javaquestions.service.question.QuestionServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,6 +22,7 @@ import java.util.Set;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class InterviewShowQuestionServiceBean implements ActionHandlerService, BotSession, KeyboardButtons<String>, Showable<Question> {
 
     private final SenderServiceBean sender;

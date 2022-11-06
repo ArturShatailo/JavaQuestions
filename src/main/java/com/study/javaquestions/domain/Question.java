@@ -1,7 +1,6 @@
 package com.study.javaquestions.domain;
 
 import lombok.*;
-
 import javax.persistence.*;
 
 @Table(name = "questions")

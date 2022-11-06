@@ -13,12 +13,15 @@ import com.study.javaquestions.bot.sender.SenderServiceBean;
 import com.study.javaquestions.domain.Request;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
+@Transactional
 //BotSession can be injected
 public class ChooseTopicServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String>, InlineKeyboardButtons<Topic> {
 
