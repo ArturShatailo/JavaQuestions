@@ -108,7 +108,6 @@ public class ButtonServiceBean implements ButtonService{
         return inlineKeyboardMarkup;
     }
 
-
     @Override
     public InlineKeyboardMarkup createInlineKeyboard(List<String> N){
 

@@ -11,7 +11,6 @@ import com.study.javaquestions.service.interview.InterviewServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -34,10 +33,12 @@ public class InterviewShowQuestionServiceBean implements ActionHandlerService, B
     public boolean mineCheck(Request request) {
         String requestSessionValue = "INTERVIEW";
         String requestValue = "Показати перше питання";
-        String requestValue1 = "Показати наступне питання";
+        String requestValue2 = "Показати наступне питання";
+        String requestValue1 = "Не знаю відповіді";
         return request.getStep().toLowerCase().startsWith(requestSessionValue.toLowerCase())
                 && (request.getMessage().getText().toLowerCase().endsWith(requestValue.toLowerCase())
-                    || request.getMessage().getText().toLowerCase().endsWith(requestValue1.toLowerCase()));
+                    || request.getMessage().getText().toLowerCase().endsWith(requestValue1.toLowerCase())
+                    || request.getMessage().getText().toLowerCase().endsWith(requestValue2.toLowerCase()));
     }
 
     @Override
@@ -47,7 +48,7 @@ public class InterviewShowQuestionServiceBean implements ActionHandlerService, B
 
         showKeyboardButtons(request,
                 "Добре, " + request.getUser().getFirstName(),
-                List.of("Показати наступне питання", "🔙 Повернутись до головного меню"));
+                List.of("Показати підказку", "Не знаю відповіді", "🔙 Повернутись до головного меню"));
         defineRequest(request);
     }
 
@@ -63,6 +64,7 @@ public class InterviewShowQuestionServiceBean implements ActionHandlerService, B
             show(interview.defineCurrentQuestion(), request);
         }
     }
+
     @Override
     public void nothingToShow(Request request) {
         showKeyboardButtons(request,
@@ -72,13 +74,7 @@ public class InterviewShowQuestionServiceBean implements ActionHandlerService, B
 
     @Override
     public void show(Question question, Request request) {
-        sender.sendMessageWithButtons(
-                request,
-                "Напиши відповідь і відправ мені :)\n\n" +
-                        "❓ " + question.getTitle(),
-                buttons.createInlineKeyboard(
-                        buttons.getKeyboardMap(Arrays.asList("\uD83D\uDD2E Показати підказку", "Показати підказку на питання " + "#" + question.getId()))
-                ));
+        sender.sendMessage(request, "❓ " + question.getTitle());
     }
 
     @Override

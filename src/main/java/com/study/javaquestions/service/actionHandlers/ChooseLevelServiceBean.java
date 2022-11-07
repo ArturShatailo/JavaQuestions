@@ -6,21 +6,18 @@ import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.QuestionSession;
 import com.study.javaquestions.domain.Request;
 import com.study.javaquestions.service.button.ButtonServiceBean;
-import com.study.javaquestions.service.button.InlineKeyboardButtons;
 import com.study.javaquestions.service.button.KeyboardButtons;
 import com.study.javaquestions.service.level.LevelServiceBean;
 import com.study.javaquestions.service.questionSession.QuestionSessionServiceBean;
 import com.study.javaquestions.bot.sender.SenderServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-//BotSession can be injected
-public class ChooseLevelServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String>, InlineKeyboardButtons<Level> {
+public class ChooseLevelServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<Level>/*, InlineKeyboardButtons<Level>*/ {
 
     private final SenderServiceBean sender;
 
@@ -55,9 +52,13 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession,
 
         showKeyboardButtons(request,
                 "Дякую, *" + request.getUser().getFirstName() + "* 🙂",
-                List.of("🔙 Повернутись до головного меню"));
+                getLevels());
 
-        showInlineButtons(getLevels(), request);
+//        showKeyboardButtons(request,
+//                "Дякую, *" + request.getUser().getFirstName() + "* 🙂",
+//                List.of("🔙 Повернутись до головного меню"));
+
+//        showInlineButtons(getLevels(), request);
     }
 
     private void processQuestionSession(String chatID) {
@@ -66,24 +67,31 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession,
         questionSessionServiceBean.create(questionSession);
     }
 
-    @Override
-    public void showInlineButtons(Collection<Level> levels, Request request) {
-        sender.sendMessageWithButtons(
-                request,
-                "Обери рівень з представлених нижче 📊",
-                buttons.createInlineKeyboard(
-                        levels.stream()
-                                .map(Level::getName)
-                                .collect(Collectors.toList())
-                ));
-    }
+//    @Override
+//    public void showInlineButtons(Collection<Level> levels, Request request) {
+//        sender.sendMessageWithButtons(
+//                request,
+//                "Обери рівень з представлених нижче 📊",
+//                buttons.createInlineKeyboard(
+//                        levels.stream()
+//                                .map(Level::getName)
+//                                .collect(Collectors.toList())
+//                ));
+//    }
 
     private List<Level> getLevels(){
         return levelServiceBean.getAll();
     }
 
     @Override
-    public void showKeyboardButtons(Request request, String text, List<String> buttonsText) {
+    public void showKeyboardButtons(Request request, String text, List<Level> buttonsList) {
+
+        List<String> buttonsText = buttonsList
+                .stream()
+                .map(Level::getName)
+                .collect(Collectors.toList());
+        buttonsText.add("🔙 Повернутись до головного меню");
+
         sender.sendMessageWithButtons(
                 request,
                 text,

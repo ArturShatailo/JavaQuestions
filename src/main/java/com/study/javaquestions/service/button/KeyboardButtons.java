@@ -5,6 +5,6 @@ import java.util.List;
 
 public interface KeyboardButtons<E> {
 
-    void showKeyboardButtons(Request request, String text, List<E> buttonsText);
+    void showKeyboardButtons(Request request, String text, List<E> collection);
 
 }

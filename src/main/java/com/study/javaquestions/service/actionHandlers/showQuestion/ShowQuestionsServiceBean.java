@@ -108,7 +108,10 @@ public class ShowQuestionsServiceBean implements ActionHandlerService, BotSessio
                 request,
                 "❓ " + q.getTitle(),
                 buttons.createInlineKeyboard(
-                        buttons.getKeyboardMap(Arrays.asList("\uD83D\uDD2E Відкрити відповідь", "Відкрити відповідь на питання " + "#" + q.getId()))
+                        buttons.getKeyboardMap(
+                                Arrays.asList(
+                                        "Відповідь", "Відкрити відповідь на питання " + "#" + q.getId(),
+                                        "Підказка", "Відкрити підказку до питання " + "#" + q.getId()))
                 )));
     }
 }

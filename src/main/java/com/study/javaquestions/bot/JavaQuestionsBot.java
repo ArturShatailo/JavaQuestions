@@ -1,5 +1,6 @@
 package com.study.javaquestions.bot;
 
+import com.study.javaquestions.bot.sender.SenderService;
 import com.study.javaquestions.bot.session.BotSession;
 import com.study.javaquestions.bot.util.BotConfig;
 import com.study.javaquestions.controller.container.HandlerContainer;
@@ -24,6 +25,8 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotSessi
 
     private final BotConfig botConfig;
 
+    private final SenderService senderService;
+
     @Override
     public String getBotUsername() {
         return botConfig.botBean().getUsername();
@@ -40,10 +43,10 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotSessi
         if (update.hasMessage() && update.getMessage().hasText())
             processMessage(update.getMessage());
         else if (update.hasCallbackQuery()) {
-
             processMessage(
                     update.getCallbackQuery().getMessage(),
                     update.getCallbackQuery().getData());
+
 //            update.getCallbackQuery().getMessage().setText(update.getCallbackQuery().getData());
 //            processMessage(update.getCallbackQuery().getMessage());
         } else

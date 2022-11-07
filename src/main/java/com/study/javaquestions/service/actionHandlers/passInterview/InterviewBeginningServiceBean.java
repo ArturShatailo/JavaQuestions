@@ -13,11 +13,8 @@ import com.study.javaquestions.service.answer.AnswerServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -59,7 +56,7 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
 
         showKeyboardButtons(request,
                 "Зараз я буду тобі надсилати питання, а ти маєш відпривляти мені відповіді у повідомленні. " +
-                        "В кінці співбесіди, ти зможеш самостійно оцінити наскільки ти впорався, я надам тобі список" +
+                        "В кінці співбесіди, ти зможеш самостійно оцінити наскільки ти впорався, я надам тобі список " +
                         "всіх пройдених питань та відповіді на них, різом із твоїм варіантом для порівняння.",
                 List.of("Показати перше питання", "🔙 Noooo God! No! God, please, no!"));
     }
@@ -86,7 +83,7 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
     private List<Question> defineQuestions(Request request) {
         List<Question> questions = new ArrayList<>();
         Level level = getChosen(request);
-        Set<Topic> topics = level.getTopics();
+        List<Topic> topics = level.getTopics();
         topics.forEach(q ->
                 questions.addAll(questionServiceBean.getQuestionsListByLevelAndTopic(level, q))
         );
