@@ -52,6 +52,8 @@ public class SenderServiceBean{
             e.setMessageId(request.getMessage().getMessageId());
             e.setReplyMarkup(replyKeyboard);
             e.setText(text);
+            e.setParseMode("Markdown");
+            e.enableHtml(true);
             senderService.execute(e);
         } catch (TelegramApiException ex) {
             throw new RuntimeException(ex);

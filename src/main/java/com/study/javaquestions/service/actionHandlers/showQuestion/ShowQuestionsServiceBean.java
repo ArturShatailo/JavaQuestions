@@ -106,12 +106,12 @@ public class ShowQuestionsServiceBean implements ActionHandlerService, BotSessio
     public void show(List<Question> questions, Request request) {
         questions.forEach(q -> sender.sendMessageWithButtons(
                 request,
-                "❓ " + q.getTitle(),
+                "❓ " + q.getTitle() + "\n\n" +
+                     "Підказка: <span class=\"tg-spoiler\">" + q.getHint() + "</span>",
                 buttons.createInlineKeyboard(
                         buttons.getKeyboardMap(
                                 Arrays.asList(
-                                        "Відповідь", "Відкрити відповідь на питання " + "#" + q.getId(),
-                                        "Підказка", "Відкрити підказку до питання " + "#" + q.getId()))
-                )));
+                                        "Відповідь", "Відкрити відповідь на питання " + "#" + q.getId())
+                        ))));
     }
 }

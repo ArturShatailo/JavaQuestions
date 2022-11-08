@@ -85,6 +85,7 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotSessi
                 .text(inputtedText)
                 .build();
         sendMessage.setParseMode("Markdown");
+        sendMessage.enableHtml(true);
 
         return sendMessage;
     }
