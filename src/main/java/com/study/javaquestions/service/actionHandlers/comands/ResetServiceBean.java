@@ -1,12 +1,12 @@
 package com.study.javaquestions.service.actionHandlers.comands;
 
+import com.study.javaquestions.bot.sender.SenderServiceBean;
 import com.study.javaquestions.bot.session.BotSession;
+import com.study.javaquestions.bot.session.QuestionMenuSession;
 import com.study.javaquestions.domain.Request;
 import com.study.javaquestions.service.actionHandlers.ActionHandlerService;
 import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.button.KeyboardButtons;
-import com.study.javaquestions.bot.sender.SenderServiceBean;
-import com.study.javaquestions.service.client.ClientServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Arrays;
@@ -14,14 +14,11 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-//BotSession can be injected
-public class StartBotServiceBean implements ActionHandlerService, BotSession, KeyboardButtons<String> {
+public class ResetServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String> {
 
     private final SenderServiceBean sender;
 
     private final ButtonServiceBean buttons;
-
-    private final ClientServiceBean clientServiceBean;
 
     @Override
     public int globalCheck() {
@@ -30,15 +27,9 @@ public class StartBotServiceBean implements ActionHandlerService, BotSession, Ke
 
     @Override
     public boolean mineCheck(Request request) {
-        String requestValue = "/start";
-        String requestValueBack = "Повернутись до головного меню";
-        String requestValueBack1 = "Noooo God! No! God, please, no!";
+        String requestValue = "/reset";
         return request.getSendMessage().getText().toLowerCase()
-                        .endsWith(requestValue.toLowerCase()) ||
-                request.getSendMessage().getText().toLowerCase()
-                        .endsWith(requestValueBack.toLowerCase()) ||
-                request.getSendMessage().getText().toLowerCase()
-                        .endsWith(requestValueBack1.toLowerCase());
+                        .endsWith(requestValue.toLowerCase());
     }
 
     @Override
@@ -46,20 +37,12 @@ public class StartBotServiceBean implements ActionHandlerService, BotSession, Ke
         String chatID = request.getSendMessage().getChatId();
         sessions.put(chatID, "START");
         sessionSteps.put(chatID, "START");
-
-        processRequest(request);
+        questionsSessions.remove(chatID);
 
         showKeyboardButtons(request,
-                "Вітаю, радий тебе бачити \uD83D\uDE4B \nЧого бажаєш, розробнику?",
+                "Твоя сессія оновлена",
                 Arrays.asList("📋 Список питань", /*"💾 Збережені питання",*/
                         "➕ Додати питання", "🗳 Емітація співбесіди"));
-    }
-
-    private void processRequest(Request request) {
-        clientServiceBean.createFromUser(
-                request.getUser(),
-                request.getSendMessage().getChatId()
-        );
     }
 
     @Override
