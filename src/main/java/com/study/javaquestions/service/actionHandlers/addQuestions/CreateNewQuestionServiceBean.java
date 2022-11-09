@@ -50,7 +50,7 @@ public class CreateNewQuestionServiceBean implements ActionHandlerService, BotSe
         sessionSteps.put(chatID, "QUESTION CREATION");
 
         showKeyboardButtons(request,
-                "Дякую за відповідь, *" + request.getUser().getFirstName() + "*",
+                "Дякую за відповідь, " + request.getUser().getFirstName(),
                 List.of("🔙  Повернутись до головного меню"));
         defineRequest(request);
     }

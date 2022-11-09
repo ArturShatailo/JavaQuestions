@@ -52,7 +52,7 @@ public class SenderServiceBean{
             e.setMessageId(request.getMessage().getMessageId());
             e.setReplyMarkup(replyKeyboard);
             e.setText(text);
-            e.setParseMode("Markdown");
+            //e.setParseMode("MarkdownV2");
             e.enableHtml(true);
             senderService.execute(e);
         } catch (TelegramApiException ex) {

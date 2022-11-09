@@ -53,7 +53,7 @@ public class ChooseInterviewLevelServiceBean implements ActionHandlerService, Bo
         processInterview(chatID);
 
         showKeyboardButtons(request,
-                "Дякую, *" + request.getUser().getFirstName() + "* 🙂",
+                "Дякую, " + request.getUser().getFirstName() + " 🙂",
                 List.of("🔙 Повернутись до головного меню"));
 
         showInlineButtons(getLevels(), request);

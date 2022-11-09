@@ -84,8 +84,8 @@ public class JavaQuestionsBot extends TelegramLongPollingBot implements BotSessi
                 .chatId(chatId.toString())
                 .text(inputtedText)
                 .build();
-        sendMessage.setParseMode("Markdown");
         sendMessage.enableHtml(true);
+        //sendMessage.setParseMode("MarkdownV2");
 
         return sendMessage;
     }

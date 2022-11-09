@@ -54,7 +54,7 @@ public class ShowQuestionsServiceBean implements ActionHandlerService, BotSessio
         Topic topic = getChosen(request, chatID);
         processQuestionSession(topic, chatID);
         showKeyboardButtons(request,
-                    "СПИСОК ПИТАНЬ З ТЕМИ *" + topic.getName() + "*",
+                    "СПИСОК ПИТАНЬ З ТЕМИ " + topic.getName(),
                     List.of("🔙 Повернутись до вибору теми"));
         defineRequest(request);
     }

@@ -51,11 +51,11 @@ public class ChooseTopicServiceBean implements ActionHandlerService, BotSession,
         processQuestionSession(level, chatID);
 
         showKeyboardButtons(request,
-                "Ти обрав *" + level.getName() + "*",
+                "Ти обрав " + level.getName(),
                 level.getTopics());
 
 //        showKeyboardButtons(request,
-//                "Ти обрав *" + level.getName() + "*",
+//                "Ти обрав " + level.getName(),
 //                List.of("🔙 Повернутись до вибору рівня"));
 
         //showInlineButtons(level.getTopics(), request);

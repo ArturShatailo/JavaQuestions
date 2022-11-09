@@ -51,11 +51,11 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession,
         processQuestionSession(chatID);
 
         showKeyboardButtons(request,
-                "Дякую, *" + request.getUser().getFirstName() + "* 🙂",
+                "Дякую, " + request.getUser().getFirstName() + " 🙂",
                 getLevels());
 
 //        showKeyboardButtons(request,
-//                "Дякую, *" + request.getUser().getFirstName() + "* 🙂",
+//                "Дякую, " + request.getUser().getFirstName() + " 🙂",
 //                List.of("🔙 Повернутись до головного меню"));
 
 //        showInlineButtons(getLevels(), request);
