@@ -44,6 +44,9 @@ public class ShowSingleQuestionServiceBean implements BotSession, KeyboardButton
 
     @Override
     public void nothingToShow(Request request) {
+        sessionSteps.put(
+                request.getSendMessage().getChatId(),
+                "INTERVIEW COMPLETED");
         showKeyboardButtons(request,
                 "Це було останнє питання  \uD83E\uDD37",
                 List.of("Показати результат співбесіди", "🔙 Повернутись до головного меню"));
@@ -52,6 +55,10 @@ public class ShowSingleQuestionServiceBean implements BotSession, KeyboardButton
     @Override
     public void show(Question q, Request request) {
 
+        sessionSteps.put(
+                request.getSendMessage().getChatId(),
+                "INPUT ANSWER QUESTION #" + q.getId());
+
         sender.sendMessageWithButtons(
                 request,
                 "❓ " + q.getTitle() + "\n\n" +
@@ -59,8 +66,7 @@ public class ShowSingleQuestionServiceBean implements BotSession, KeyboardButton
                 buttons.createInlineKeyboard(
                         buttons.getKeyboardMap(
                                 Arrays.asList(
-                                        "Не знаю відповідь, далі", "Не знаю відповідь на питання " + "#" + q.getId(),
-                                        "Готовий відповісти", "Готовий відповісти на питання " + "#" + q.getId())
+                                        "Не знаю відповідь, наступне питання", "Немає відповіді")
                         )));
     }
 

@@ -62,11 +62,7 @@ public class ChooseInterviewLevelServiceBean implements ActionHandlerService, Bo
     private void processInterview(String chatID) {
         Interview interview = new Interview();
         interview.setChatID(chatID);
-        if (interviewServiceBean.getByChatID(chatID) == null) {
-            interviewServiceBean.create(interview);
-        } else {
-            interviewServiceBean.updateByChatID(chatID, interview);
-        }
+        interviewServiceBean.createOrUpdateByChatID(interview);
     }
 
     @Override

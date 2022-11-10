@@ -2,8 +2,9 @@ package com.study.javaquestions.domain;
 
 import lombok.*;
 import javax.persistence.*;
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Table(name = "interviews")
 @Entity
@@ -27,7 +28,7 @@ public class Interview {
     List<Question> questions;
 
     @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
-    List<Answer> answers = new ArrayList<>();
+    Set<Answer> answers = new HashSet<>();
 
     public Question defineCurrentQuestion(){
         return questions.get(currentQuestion - 1);

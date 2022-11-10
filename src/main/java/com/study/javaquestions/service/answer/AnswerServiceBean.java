@@ -16,8 +16,19 @@ public class AnswerServiceBean {
         return answerRepository.save(answer);
     }
 
-    public Answer getAnswerByChatIDAndQuestion(String chatID, Question question) {
-        return answerRepository.findAnswerByChatIDAndQuestion(chatID, question)
-                .orElse(null);
+    public Answer createOrUpdateByChatIDAndQuestion(Answer answer) {
+        String chatID = answer.getChatID();
+        Question question = answer.getQuestion();
+        if (getByChatIDAndQuestion(chatID, question) == null) return create(answer);
+        else return updateByChatIDAndQuestion(chatID, question, answer);
+    }
+
+    public Answer getByChatIDAndQuestion(String chatID, Question question) {
+        return answerRepository.findAnswerByChatIDAndQuestion(chatID, question).orElse(null);
+    }
+
+    public Answer updateByChatIDAndQuestion(String chatID, Question question, Answer answer) {
+        answerRepository.updateAnswerByChatIDAndQuestion(chatID, question, answer);
+        return getByChatIDAndQuestion(chatID, question);
     }
 }
