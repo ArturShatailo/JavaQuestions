@@ -39,7 +39,6 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
     public boolean mineCheck(Request request) {
         String requestStepValue = "CHOOSE INTERVIEW LEVEL";
         String requestSessionValue = "INTERVIEW";
-        //String requestValue = "Noooo God! No! God, please, no!";
         return request.getStep().toLowerCase().startsWith(requestSessionValue.toLowerCase())
                 && request.getSessionStep().toLowerCase().startsWith(requestStepValue.toLowerCase());
     }

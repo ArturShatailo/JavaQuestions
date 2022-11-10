@@ -15,7 +15,6 @@ public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
     Optional<Answer> findAnswerByChatIDAndQuestion(String chatID, Question question);
 
-
     @Transactional
     @Modifying
     @Query(value =

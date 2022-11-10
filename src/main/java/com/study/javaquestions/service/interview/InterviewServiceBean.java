@@ -6,7 +6,6 @@ import com.study.javaquestions.repository.InterviewRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -34,10 +33,6 @@ public class InterviewServiceBean {
                     return interviewRepository.save(i);
                 }
         );
-    }
-
-    public List<Interview> getAll() {
-        return interviewRepository.findAll();
     }
 
     public Interview getByChatID(String chatID) {

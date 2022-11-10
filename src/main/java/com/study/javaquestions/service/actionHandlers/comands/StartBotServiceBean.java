@@ -14,7 +14,6 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-//BotSession can be injected
 public class StartBotServiceBean implements ActionHandlerService, BotSession, KeyboardButtons<String> {
 
     private final SenderServiceBean sender;
@@ -34,10 +33,10 @@ public class StartBotServiceBean implements ActionHandlerService, BotSession, Ke
         String requestValueBack = "Повернутись до головного меню";
         String requestValueBack1 = "Noooo God! No! God, please, no!";
         return request.getSendMessage().getText().toLowerCase()
-                        .endsWith(requestValue.toLowerCase()) ||
-                request.getSendMessage().getText().toLowerCase()
-                        .endsWith(requestValueBack.toLowerCase()) ||
-                request.getSendMessage().getText().toLowerCase()
+                        .endsWith(requestValue.toLowerCase())
+                || request.getSendMessage().getText().toLowerCase()
+                        .endsWith(requestValueBack.toLowerCase())
+                || request.getSendMessage().getText().toLowerCase()
                         .endsWith(requestValueBack1.toLowerCase());
     }
 

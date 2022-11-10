@@ -5,7 +5,6 @@ import com.study.javaquestions.repository.ClientRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.User;
-
 import javax.persistence.EntityNotFoundException;
 
 @Service
