@@ -18,7 +18,7 @@ import java.util.List;
 @Component
 @AllArgsConstructor
 @Transactional
-public class ShowSingleQuestionServiceBean implements BotSession, KeyboardButtons<String>, Showable<Question> {
+public class ShowSingleQuestionServiceBean implements BotSession, KeyboardButtons<String>, Showable<Interview> {
 
     private final SenderServiceBean sender;
 
@@ -34,12 +34,7 @@ public class ShowSingleQuestionServiceBean implements BotSession, KeyboardButton
         interview.upscaleCurrentQuestion();
 
         if (interview.checkQuestionsAmount()) nothingToShow(request);
-        else {
-            showKeyboardButtons(request,
-                    "Питання " + interview.getCurrentQuestion() + " з " + interview.getMaxQuestion(),
-                    List.of("🔙 Повернутись до головного меню"));
-            show(interview.defineCurrentQuestion(), request);
-        }
+        else show(interview, request);
     }
 
     @Override
@@ -53,21 +48,25 @@ public class ShowSingleQuestionServiceBean implements BotSession, KeyboardButton
     }
 
     @Override
-    public void show(Question q, Request request) {
+    public void show(Interview interview, Request request) {
+
+        Question question = interview.defineCurrentQuestion();
 
         sessionSteps.put(
                 request.getSendMessage().getChatId(),
-                "INPUT ANSWER QUESTION #" + q.getId());
+                "INPUT ANSWER QUESTION #" + question.getId());
+
+        showKeyboardButtons(request,
+                "Питання " + interview.getCurrentQuestion() + " з " + interview.getMaxQuestion(),
+                List.of("🔙 Повернутись до головного меню"));
 
         sender.sendMessageWithButtons(
                 request,
-                "❓ " + q.getTitle() + "\n\n" +
-                        "Підказка: <span class=\"tg-spoiler\">" + q.getHint() + "</span>",
-                buttons.createInlineKeyboard(
-                        buttons.getKeyboardMap(
+                "❓ " + question.getTitle() + "\n\nПідказка: <span class=\"tg-spoiler\">" + question.getHint() + "</span>",
+                buttons.createInlineKeyboard(buttons.getKeyboardMap(
                                 Arrays.asList(
                                         "Не знаю відповідь, наступне питання", "Немає відповіді")
-                        )));
+                )));
     }
 
     @Override

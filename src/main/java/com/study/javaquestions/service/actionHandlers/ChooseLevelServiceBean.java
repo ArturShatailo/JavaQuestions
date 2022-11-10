@@ -36,9 +36,7 @@ public class ChooseLevelServiceBean implements ActionHandlerService, BotSession,
     public boolean mineCheck(Request request) {
         String requestValue = "Обрати рівень питання";
         String requestValueBack = "Повернутись до вибору рівня";
-        //String requestSession = "QUESTIONS";
-        return (request.getSendMessage().getText().toLowerCase().endsWith(requestValue.toLowerCase())
-                /*&& request.getStep().toLowerCase().startsWith(requestSession.toLowerCase())*/)
+        return request.getSendMessage().getText().toLowerCase().endsWith(requestValue.toLowerCase())
                 || request.getSendMessage().getText().toLowerCase().endsWith(requestValueBack.toLowerCase());
     }
 
