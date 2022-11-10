@@ -22,7 +22,11 @@ public class QuestionSessionServiceBean {
         } else {
             return questionSessionRepository.save(questionSession);
         }
+    }
 
+    public QuestionSession getByChatId(String chatId){
+        return questionSessionRepository.findQuestionSessionByChatID(chatId)
+                .orElseThrow(() -> new EntityNotFoundException("Question Session not found with chatId = " + chatId));
     }
 
     public QuestionSession updateById(Long id, QuestionSession q) {
@@ -52,4 +56,15 @@ public class QuestionSessionServiceBean {
         questionSessionRepository.updateTopicByChatId(chatID, topic);
     }
 
+    public void updateTitleByChatId(String chatID, String title) {
+        questionSessionRepository.updateTitleByChatId(chatID, title);
+    }
+
+    public void updateHintByChatId(String chatID, String title) {
+        questionSessionRepository.updateHintByChatId(chatID, title);
+    }
+
+    public void updateAnswerByChatId(String chatID, String title) {
+        questionSessionRepository.updateAnswerByChatId(chatID, title);
+    }
 }

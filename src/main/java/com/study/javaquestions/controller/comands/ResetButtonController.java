@@ -1,20 +1,17 @@
-package com.study.javaquestions.controller;
+package com.study.javaquestions.controller.comands;
 
-import com.study.javaquestions.bot.Buttonable;
-import com.study.javaquestions.bot.componenents.BotSession;
-import com.study.javaquestions.service.actionHandlers.StartBotServiceBean;
-import com.study.javaquestions.service.sender.SenderServiceBean;
+import com.study.javaquestions.bot.session.BotSession;
+import com.study.javaquestions.controller.ActionHandler;
 import com.study.javaquestions.domain.Request;
+import com.study.javaquestions.service.actionHandlers.comands.ResetServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import java.util.Arrays;
-import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class StartButtonController implements ActionHandler, BotSession, Buttonable {
+public class ResetButtonController implements ActionHandler, BotSession {
 
-    private final StartBotServiceBean serviceBean;
+    private final ResetServiceBean serviceBean;
 
     @Override
     public int isGlobal() {
