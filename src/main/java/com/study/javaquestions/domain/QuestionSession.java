@@ -1,13 +1,14 @@
 package com.study.javaquestions.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import javax.persistence.*;
 
 @Table(name = "question_sessions")
-@Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class QuestionSession {
 
     @Id
@@ -20,10 +21,24 @@ public class QuestionSession {
     @OneToOne(cascade = CascadeType.ALL)
     private Topic topic;
 
+    private String title;
+
+    private String hint;
+
+    private String answer;
+
     private String chatID;
 
     public QuestionSession(String chatID) {
         this.chatID = chatID;
     }
 
+    @Override
+    public String toString() {
+        return "<b>" + title + "</b>\n\n" +
+                "Тема: " + topic.getName() + "\n" +
+                "Рівень: " + level.getName() + "\n\n" +
+                "Підказка: " + hint + "\n" +
+                "Відповідь: " + answer;
+    }
 }

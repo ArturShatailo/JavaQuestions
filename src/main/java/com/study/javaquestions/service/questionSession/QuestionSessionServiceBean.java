@@ -1,6 +1,8 @@
 package com.study.javaquestions.service.questionSession;
 
+import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.QuestionSession;
+import com.study.javaquestions.domain.Topic;
 import com.study.javaquestions.repository.QuestionSessionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,7 +22,11 @@ public class QuestionSessionServiceBean {
         } else {
             return questionSessionRepository.save(questionSession);
         }
+    }
 
+    public QuestionSession getByChatId(String chatId){
+        return questionSessionRepository.findQuestionSessionByChatID(chatId)
+                .orElseThrow(() -> new EntityNotFoundException("Question Session not found with chatId = " + chatId));
     }
 
     public QuestionSession updateById(Long id, QuestionSession q) {
@@ -42,12 +48,23 @@ public class QuestionSessionServiceBean {
         return q;
     }
 
-    public void updateLevelByChatId(String chatID, String level) {
+    public void updateLevelByChatId(String chatID, Level level) {
         questionSessionRepository.updateLevelByChatId(chatID, level);
     }
 
-    public void updateTopicByChatId(String chatID, String topic) {
+    public void updateTopicByChatId(String chatID, Topic topic) {
         questionSessionRepository.updateTopicByChatId(chatID, topic);
     }
 
+    public void updateTitleByChatId(String chatID, String title) {
+        questionSessionRepository.updateTitleByChatId(chatID, title);
+    }
+
+    public void updateHintByChatId(String chatID, String title) {
+        questionSessionRepository.updateHintByChatId(chatID, title);
+    }
+
+    public void updateAnswerByChatId(String chatID, String title) {
+        questionSessionRepository.updateAnswerByChatId(chatID, title);
+    }
 }

@@ -1,7 +1,3 @@
-# Bot configuration
-bot:
-  TOKEN: <5625550512:AAFSdO15T_EWhiwz9kMlX-HYslCBh1M7Bw4>
-  USERNAME: <JavaQuestions_bot>
 # Server configuration
 server:
   PORT: 5000

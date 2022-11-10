@@ -1,14 +1,14 @@
 package com.study.javaquestions.domain;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import javax.persistence.*;
-import java.util.Set;
 
 @Table(name = "questions")
-@Data
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class Question {
 
     @Id
@@ -21,10 +21,18 @@ public class Question {
 
     private String hint;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private Topic topic;
-//
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private Level level;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Topic topic;
 
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Level level;
+
+    @Override
+    public String toString() {
+        return "<b>" + title + "</b>\n\n" +
+                "Тема: " + topic.getName() + "\n" +
+                "Рівень: " + level.getName() + "\n\n" +
+                "Підказка: " + hint + "\n" +
+                "Відповідь: " + answer;
+    }
 }
