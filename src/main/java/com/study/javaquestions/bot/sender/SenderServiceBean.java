@@ -4,11 +4,11 @@ import com.study.javaquestions.domain.Request;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendAudio;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
 import java.io.File;
 
 @Component
@@ -42,6 +42,21 @@ public class SenderServiceBean{
             senderService.execute(sendMessage);
         } catch (TelegramApiException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void changeMessageWithButtons(Request request, String text, InlineKeyboardMarkup replyKeyboard){
+        try {
+            EditMessageText e = new EditMessageText();
+            e.setChatId(request.getSendMessage().getChatId());
+            e.setMessageId(request.getMessage().getMessageId());
+            e.setReplyMarkup(replyKeyboard);
+            e.setText(text);
+            //e.setParseMode("MarkdownV2");
+            e.enableHtml(true);
+            senderService.execute(e);
+        } catch (TelegramApiException ex) {
+            throw new RuntimeException(ex);
         }
     }
 

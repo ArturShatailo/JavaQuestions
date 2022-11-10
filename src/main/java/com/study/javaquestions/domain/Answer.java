@@ -1,9 +1,7 @@
 package com.study.javaquestions.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import javax.persistence.*;
 
 @Table(name = "answers")
@@ -12,6 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Answer {
 
     @Id
@@ -24,4 +23,13 @@ public class Answer {
     private Question question;
 
     private String answer;
+
+    @Override
+    public String toString() {
+        return "<b>" + question.getTitle() + "</b>\n\n" +
+                "Правильна відповідь: " + question.getAnswer() + "\n" +
+                "-----\n"+
+                "Твоя відповідь: " + answer;
+    }
+
 }

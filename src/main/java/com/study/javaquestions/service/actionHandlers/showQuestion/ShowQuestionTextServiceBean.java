@@ -1,5 +1,6 @@
 package com.study.javaquestions.service.actionHandlers.showQuestion;
 
+import com.study.javaquestions.bot.sender.SenderServiceBean;
 import com.study.javaquestions.bot.session.BotSession;
 import com.study.javaquestions.domain.Question;
 import com.study.javaquestions.domain.Request;
@@ -7,7 +8,6 @@ import com.study.javaquestions.service.actionHandlers.ActionHandlerService;
 import com.study.javaquestions.service.actionHandlers.Showable;
 import com.study.javaquestions.service.button.ButtonServiceBean;
 import com.study.javaquestions.service.question.QuestionServiceBean;
-import com.study.javaquestions.bot.sender.SenderServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.Arrays;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class ShowAnswerServiceBean implements ActionHandlerService, BotSession, Showable<Question> {
+public class ShowQuestionTextServiceBean implements ActionHandlerService, BotSession, Showable<Question> {
 
     private final SenderServiceBean sender;
 
@@ -30,7 +30,7 @@ public class ShowAnswerServiceBean implements ActionHandlerService, BotSession, 
 
     @Override
     public boolean mineCheck(Request request) {
-        String requestValue = "Відкрити відповідь на питання";
+        String requestValue = "Відкрити текст питання";
         String requestSessionStep = "QUESTIONS LIST";
         return request.getSendMessage().getText().toLowerCase().startsWith(requestValue.toLowerCase())
                 && request.getSessionStep().startsWith(requestSessionStep);
@@ -63,7 +63,7 @@ public class ShowAnswerServiceBean implements ActionHandlerService, BotSession, 
 
     @Override
     public void nothingToShow(Request request) {
-        sender.sendMessage(request, "Вибач, але я не знаю відповіді на це питання \uD83E\uDD37");
+        sender.sendMessage(request, "Вибач, але я не знаю що це за питання \uD83E\uDD37");
     }
 
     @Override
@@ -71,12 +71,13 @@ public class ShowAnswerServiceBean implements ActionHandlerService, BotSession, 
 
         sender.changeMessageWithButtons(
                 request,
-                q.getAnswer(),
+                "❓ " + q.getTitle() + "\n\n" +
+                     "Підказка: <span class=\"tg-spoiler\">" + q.getHint() + "</span>",
                 buttons.createInlineKeyboard(
                         buttons.getKeyboardMap(
-                                Arrays.asList("Питання", "Відкрити текст питання " + "#" + q.getId())
-                )
-        ));
+                                Arrays.asList(
+                                        "Відповідь", "Відкрити відповідь на питання " + "#" + q.getId())
+                        )));
     }
 
     private String substringDataFromMessage(Request request) {

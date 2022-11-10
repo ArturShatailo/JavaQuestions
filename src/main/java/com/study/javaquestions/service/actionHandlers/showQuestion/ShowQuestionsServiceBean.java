@@ -54,7 +54,7 @@ public class ShowQuestionsServiceBean implements ActionHandlerService, BotSessio
         Topic topic = getChosen(request, chatID);
         processQuestionSession(topic, chatID);
         showKeyboardButtons(request,
-                    "СПИСОК ПИТАНЬ З ТЕМИ *" + topic.getName() + "*",
+                    "СПИСОК ПИТАНЬ З ТЕМИ " + topic.getName(),
                     List.of("🔙 Повернутись до вибору теми"));
         defineRequest(request);
     }
@@ -106,9 +106,12 @@ public class ShowQuestionsServiceBean implements ActionHandlerService, BotSessio
     public void show(List<Question> questions, Request request) {
         questions.forEach(q -> sender.sendMessageWithButtons(
                 request,
-                "❓ " + q.getTitle(),
+                "❓ " + q.getTitle() + "\n\n" +
+                     "Підказка: <span class=\"tg-spoiler\">" + q.getHint() + "</span>",
                 buttons.createInlineKeyboard(
-                        buttons.getKeyboardMap(Arrays.asList("\uD83D\uDD2E Відкрити відповідь", "Відкрити відповідь на питання " + "#" + q.getId()))
-                )));
+                        buttons.getKeyboardMap(
+                                Arrays.asList(
+                                        "Відповідь", "Відкрити відповідь на питання " + "#" + q.getId())
+                        ))));
     }
 }

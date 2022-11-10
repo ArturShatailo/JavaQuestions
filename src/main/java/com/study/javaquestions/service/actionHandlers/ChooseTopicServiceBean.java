@@ -5,7 +5,6 @@ import com.study.javaquestions.bot.session.QuestionMenuSession;
 import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.Topic;
 import com.study.javaquestions.service.button.ButtonServiceBean;
-import com.study.javaquestions.service.button.InlineKeyboardButtons;
 import com.study.javaquestions.service.button.KeyboardButtons;
 import com.study.javaquestions.service.level.LevelServiceBean;
 import com.study.javaquestions.service.questionSession.QuestionSessionServiceBean;
@@ -14,16 +13,13 @@ import com.study.javaquestions.domain.Request;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
 @Transactional
-//BotSession can be injected
-public class ChooseTopicServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String>, InlineKeyboardButtons<Topic> {
+public class ChooseTopicServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<Topic>/*, InlineKeyboardButtons<Topic>*/ {
 
     private final SenderServiceBean sender;
 
@@ -55,10 +51,14 @@ public class ChooseTopicServiceBean implements ActionHandlerService, BotSession,
         processQuestionSession(level, chatID);
 
         showKeyboardButtons(request,
-                "Ти обрав *" + level.getName() + "*",
-                List.of("🔙 Повернутись до вибору рівня"));
+                "Ти обрав " + level.getName(),
+                level.getTopics());
 
-        showInlineButtons(level.getTopics(), request);
+//        showKeyboardButtons(request,
+//                "Ти обрав " + level.getName(),
+//                List.of("🔙 Повернутись до вибору рівня"));
+
+        //showInlineButtons(level.getTopics(), request);
     }
 
     private Level getChosen (Request request, String chatID) {
@@ -79,7 +79,14 @@ public class ChooseTopicServiceBean implements ActionHandlerService, BotSession,
     }
 
     @Override
-    public void showKeyboardButtons(Request request, String text, List<String> buttonsText) {
+    public void showKeyboardButtons(Request request, String text, List<Topic> buttonsList) {
+
+        List<String> buttonsText = buttonsList
+                .stream()
+                .map(Topic::getName)
+                .collect(Collectors.toList());
+        buttonsText.add("🔙 Повернутись до вибору рівня");
+
         sender.sendMessageWithButtons(
                 request,
                 text,
@@ -87,15 +94,25 @@ public class ChooseTopicServiceBean implements ActionHandlerService, BotSession,
         );
     }
 
-    @Override
-    public void showInlineButtons(Collection<Topic> topics, Request request) {
-        sender.sendMessageWithButtons(
-                request,
-                "Будь-ласка, тепер обери топік 🎓",
-                buttons.createInlineKeyboard(
-                        topics.stream()
-                                .map(Topic::getName)
-                                .collect(Collectors.toList())
-                ));
-    }
+//    @Override
+//    public void showInlineButtons(Collection<Topic> topics, Request request) {
+//        sender.sendMessageWithButtons(
+//                request,
+//                "Будь-ласка, тепер обери топік 🎓",
+//                buttons.createInlineKeyboard(
+//                        topics.stream()
+//                                .map(Topic::getName)
+//                                .collect(Collectors.toList())
+//                ));
+//        /*
+//        sender.changeMessageWithButtons(
+//                request,
+//                "Будь-ласка, тепер обери топік 🎓",
+//                buttons.createInlineKeyboard(
+//                        topics.stream()
+//                                .map(Topic::getName)
+//                                .collect(Collectors.toList()))
+//        );
+//         */
+//    }
 }

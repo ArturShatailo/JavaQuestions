@@ -9,7 +9,7 @@ public class BotConfig {
 
     @Bean
     public BotEntity botBean(){
-        return new BotEntity("1", "2");
+        return new BotEntity("1", "JavaQuestions_bot");
     }
 
 }

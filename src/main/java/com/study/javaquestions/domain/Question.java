@@ -29,7 +29,7 @@ public class Question {
 
     @Override
     public String toString() {
-        return "*" + title + "*\n\n" +
+        return "<b>" + title + "</b>\n\n" +
                 "Тема: " + topic.getName() + "\n" +
                 "Рівень: " + level.getName() + "\n\n" +
                 "Підказка: " + hint + "\n" +

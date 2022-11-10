@@ -9,15 +9,11 @@ import com.study.javaquestions.service.button.KeyboardButtons;
 import com.study.javaquestions.service.interview.InterviewServiceBean;
 import com.study.javaquestions.service.level.LevelServiceBean;
 import com.study.javaquestions.service.question.QuestionServiceBean;
-import com.study.javaquestions.service.answer.AnswerServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -33,8 +29,6 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
     private final InterviewServiceBean interviewServiceBean;
 
     private final QuestionServiceBean questionServiceBean;
-
-    private final AnswerServiceBean answerServiceBean;
 
     @Override
     public int globalCheck() {
@@ -58,35 +52,24 @@ public class InterviewBeginningServiceBean implements ActionHandlerService, BotS
         defineRequest(request);
 
         showKeyboardButtons(request,
-                "Зараз я буду тобі надсилати питання, а ти маєш відпривляти мені відповіді у повідомленні. " +
-                        "В кінці співбесіди, ти зможеш самостійно оцінити наскільки ти впорався, я надам тобі список" +
-                        "всіх пройдених питань та відповіді на них, різом із твоїм варіантом для порівняння.",
-                List.of("Показати перше питання", "🔙 Noooo God! No! God, please, no!"));
+                "Гаразд 🙂\nЯ буду надсилати тобі питання. 🧐\nВ кінці співбесіди, ти зможеш самостійно оцінити " +
+                        "наскільки ти впорався, я надам тобі список всіх пройдених питань та правильні " +
+                        "відповіді на них, разом із твоїм варіантом, для порівняння.",
+                List.of("Показати питання", "🔙 Noooo God! No! God, please, no!"));
     }
 
     private void defineRequest(Request request) {
         String chatID = request.getSendMessage().getChatId();
-
         Interview interview = interviewServiceBean.getByChatID(chatID);
         interview.setQuestions(defineQuestions(request));
         interview.setMaxQuestion(interview.getQuestions().size());
-//        interview.setAnswers(
-//                questions.stream()
-//                        .map(a -> {
-//                            Answer answer = new Answer();
-//                            answer.setQuestion(a);
-//                            answer.setChatID(chatID);
-//                            return answerServiceBean.create(answer);
-//                        })
-//                        .collect(Collectors.toList())
-//        );
         interviewServiceBean.updateById(interview.getId(), interview);
     }
 
     private List<Question> defineQuestions(Request request) {
         List<Question> questions = new ArrayList<>();
         Level level = getChosen(request);
-        Set<Topic> topics = level.getTopics();
+        List<Topic> topics = level.getTopics();
         topics.forEach(q ->
                 questions.addAll(questionServiceBean.getQuestionsListByLevelAndTopic(level, q))
         );

@@ -53,7 +53,7 @@ public class ChooseInterviewLevelServiceBean implements ActionHandlerService, Bo
         processInterview(chatID);
 
         showKeyboardButtons(request,
-                "Дякую, *" + request.getUser().getFirstName() + "* 🙂",
+                "Дякую, " + request.getUser().getFirstName() + " 🙂",
                 List.of("🔙 Повернутись до головного меню"));
 
         showInlineButtons(getLevels(), request);
@@ -62,9 +62,7 @@ public class ChooseInterviewLevelServiceBean implements ActionHandlerService, Bo
     private void processInterview(String chatID) {
         Interview interview = new Interview();
         interview.setChatID(chatID);
-        if (interviewServiceBean.getByChatID(chatID) == null) {
-            interviewServiceBean.create(interview);
-        }
+        interviewServiceBean.createOrUpdateByChatID(interview);
     }
 
     @Override
