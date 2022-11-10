@@ -14,14 +14,12 @@ import com.study.javaquestions.service.interview.InterviewServiceBean;
 import com.study.javaquestions.service.level.LevelServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
-//BotSession can be injected
 public class ChooseInterviewLevelServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String>, InlineKeyboardButtons<Level> {
 
     private final SenderServiceBean sender;

@@ -15,8 +15,4 @@ public class Topic {
     private Long id;
 
     private String name;
-
-    /*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "topic_id")
-    private Set<Question> questions;*/
 }

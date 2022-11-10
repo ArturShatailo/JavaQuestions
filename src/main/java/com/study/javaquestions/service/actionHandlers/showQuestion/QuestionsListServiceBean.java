@@ -16,7 +16,6 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-//BotSession can be injected
 public class QuestionsListServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String> {
 
     private final SenderServiceBean sender;

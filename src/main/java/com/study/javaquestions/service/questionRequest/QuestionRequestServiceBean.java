@@ -5,7 +5,6 @@ import com.study.javaquestions.repository.QuestionRequestRepository;
 import com.study.javaquestions.service.question.QuestionServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 

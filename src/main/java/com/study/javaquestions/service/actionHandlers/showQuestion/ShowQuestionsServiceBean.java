@@ -18,7 +18,6 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
-//BotSession can be injected
 public class ShowQuestionsServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, Showable<List<Question>>, KeyboardButtons<String> {
 
     private final SenderServiceBean sender;
@@ -108,10 +107,10 @@ public class ShowQuestionsServiceBean implements ActionHandlerService, BotSessio
                 request,
                 "❓ " + q.getTitle() + "\n\n" +
                      "Підказка: <span class=\"tg-spoiler\">" + q.getHint() + "</span>",
-                buttons.createInlineKeyboard(
-                        buttons.getKeyboardMap(
+                buttons.createInlineKeyboard(buttons.getKeyboardMap(
                                 Arrays.asList(
                                         "Відповідь", "Відкрити відповідь на питання " + "#" + q.getId())
-                        ))));
+                )))
+        );
     }
 }
