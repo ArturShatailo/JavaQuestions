@@ -11,13 +11,11 @@ import com.study.javaquestions.service.questionSession.QuestionSessionServiceBea
 import com.study.javaquestions.bot.sender.SenderServiceBean;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
 @Service
-//BotSession can be injected
 public class CreateQuestionServiceBean implements ActionHandlerService, BotSession, QuestionMenuSession, KeyboardButtons<String> {
 
     private final SenderServiceBean sender;

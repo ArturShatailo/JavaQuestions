@@ -1,12 +1,9 @@
 package com.study.javaquestions.service.level;
 
 import com.study.javaquestions.domain.Level;
-import com.study.javaquestions.domain.Topic;
 import com.study.javaquestions.repository.LevelRepository;
-import com.study.javaquestions.repository.TopicRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
