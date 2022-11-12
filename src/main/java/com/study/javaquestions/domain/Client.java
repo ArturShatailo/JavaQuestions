@@ -21,4 +21,5 @@ public class Client {
     private String lastname;
 
     private String username;
+
 }

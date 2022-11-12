@@ -2,6 +2,7 @@ package com.study.javaquestions.service.level;
 
 import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.repository.LevelRepository;
+import com.study.javaquestions.util.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -21,7 +22,8 @@ public class LevelServiceBean {
     }
 
     public Level getByName(String name) {
-        return levelRepository.findLevelByName(name);
+        return levelRepository.findLevelByName(name)
+                .orElseThrow(() -> new ResourceNotFoundException("I can't find this level in database. Name: "+name));
     }
 
 }

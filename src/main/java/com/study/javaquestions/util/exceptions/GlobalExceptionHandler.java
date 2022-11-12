@@ -12,8 +12,8 @@ import java.util.Date;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(ResourceNotFoundException.class)
-    protected ResponseEntity<MyGlobalExceptionHandler> handleDeleteException() {
-        return new ResponseEntity<>(new MyGlobalExceptionHandler("This user was deleted"), HttpStatus.NOT_FOUND);
+    protected ResponseEntity<MyGlobalExceptionHandler> handleNotFoundInDatabaseException() {
+        return new ResponseEntity<>(new MyGlobalExceptionHandler("I can't find this entity in Database"), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(Exception.class)
