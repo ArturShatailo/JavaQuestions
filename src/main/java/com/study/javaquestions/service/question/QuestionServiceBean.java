@@ -3,11 +3,11 @@ package com.study.javaquestions.service.question;
 import com.study.javaquestions.domain.*;
 import com.study.javaquestions.repository.QuestionRepository;
 import com.study.javaquestions.repository.QuestionSessionRepository;
+import com.study.javaquestions.util.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @AllArgsConstructor
@@ -19,7 +19,8 @@ public class QuestionServiceBean {
 
     @Transactional
     public List<Question> getQuestionsListByLevelAndTopicFromQuestionSession(String chatID){
-        QuestionSession questionSession = questionSessionRepository.getByChatID(chatID);
+        QuestionSession questionSession = questionSessionRepository.getByChatID(chatID)
+                .orElseThrow(() -> new ResourceNotFoundException("Can't find QuestionSession with chatID = " + chatID));
         return questionRepository.findQuestionsByLevelAndTopic(
                 questionSession.getLevel(), questionSession.getTopic());
     }
@@ -32,7 +33,7 @@ public class QuestionServiceBean {
 
     public Question getById (Long id){
         return questionRepository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("Can't find Question with id = " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Can't find Question with id = " + id));
     }
 
     public Question createFromQuestionRequest(QuestionRequest questionRequest) {

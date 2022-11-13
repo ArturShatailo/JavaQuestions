@@ -2,10 +2,10 @@ package com.study.javaquestions.service.client;
 
 import com.study.javaquestions.domain.Client;
 import com.study.javaquestions.repository.ClientRepository;
+import com.study.javaquestions.util.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.User;
-import javax.persistence.EntityNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -31,6 +31,6 @@ public class ClientServiceBean {
 
     public Client getByChatID(String chatId) {
         return clientRepository.findClientByChatId(chatId)
-                .orElseThrow(() -> new EntityNotFoundException("Client not found with chatId = " + chatId));
+                .orElseThrow(() -> new ResourceNotFoundException("Client not found with chatId = " + chatId));
     }
 }

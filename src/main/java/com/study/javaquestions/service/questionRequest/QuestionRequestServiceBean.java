@@ -3,9 +3,9 @@ package com.study.javaquestions.service.questionRequest;
 import com.study.javaquestions.domain.*;
 import com.study.javaquestions.repository.QuestionRequestRepository;
 import com.study.javaquestions.service.question.QuestionServiceBean;
+import com.study.javaquestions.util.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -37,7 +37,7 @@ public class QuestionRequestServiceBean {
 
     public QuestionRequest getById(Long id){
         return questionRequestRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Question Request not found with id = " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("QuestionRequest not found with id = " + id));
     }
 
     public void updateStatusById(Long id, String status) {

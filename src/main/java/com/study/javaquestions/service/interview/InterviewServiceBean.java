@@ -3,6 +3,7 @@ package com.study.javaquestions.service.interview;
 import com.study.javaquestions.domain.Answer;
 import com.study.javaquestions.domain.Interview;
 import com.study.javaquestions.repository.InterviewRepository;
+import com.study.javaquestions.util.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class InterviewServiceBean {
                     i.setCurrentQuestion(interview.getCurrentQuestion());
                     return interviewRepository.save(i);
                 }
-        );
+        ).orElseThrow(() -> new ResourceNotFoundException("Can't find an interview with id = " + id));
     }
 
     public Interview getByChatID(String chatID) {

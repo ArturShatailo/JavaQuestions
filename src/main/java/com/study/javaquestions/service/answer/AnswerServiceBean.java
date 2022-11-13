@@ -24,7 +24,8 @@ public class AnswerServiceBean {
     }
 
     public Answer getByChatIDAndQuestion(String chatID, Question question) {
-        return answerRepository.findAnswerByChatIDAndQuestion(chatID, question).orElse(null);
+        return answerRepository.findAnswerByChatIDAndQuestion(chatID, question)
+                .orElse(null);
     }
 
     public Answer updateByChatIDAndQuestion(String chatID, Question question, Answer answer) {

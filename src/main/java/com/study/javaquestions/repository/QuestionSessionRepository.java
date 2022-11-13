@@ -13,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface QuestionSessionRepository extends JpaRepository<QuestionSession, Long> {
 
-    QuestionSession getByChatID(String chatID);
+    Optional<QuestionSession> getByChatID(String chatID);
 
     @Transactional
     @Modifying

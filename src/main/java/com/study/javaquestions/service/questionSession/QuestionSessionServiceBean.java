@@ -4,9 +4,9 @@ import com.study.javaquestions.domain.Level;
 import com.study.javaquestions.domain.QuestionSession;
 import com.study.javaquestions.domain.Topic;
 import com.study.javaquestions.repository.QuestionSessionRepository;
+import com.study.javaquestions.util.exceptions.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import javax.persistence.EntityNotFoundException;
 
 @Service
 @AllArgsConstructor
@@ -15,17 +15,16 @@ public class QuestionSessionServiceBean {
     private final QuestionSessionRepository questionSessionRepository;
 
     public QuestionSession create(QuestionSession questionSession) {
-        QuestionSession q = questionSessionRepository.getByChatID(questionSession.getChatID());
-        if (q != null) {
-            return updateByChatId(questionSession);
-        } else {
-            return questionSessionRepository.save(questionSession);
-        }
+        QuestionSession q = questionSessionRepository.getByChatID(questionSession.getChatID())
+                .orElse(null);
+        return q != null
+                ? updateByChatId(questionSession)
+                : questionSessionRepository.save(questionSession);
     }
 
     public QuestionSession getByChatId(String chatId){
         return questionSessionRepository.findQuestionSessionByChatID(chatId)
-                .orElseThrow(() -> new EntityNotFoundException("Question Session not found with chatId = " + chatId));
+                .orElseThrow(() -> new ResourceNotFoundException("Question Session not found with chatId = " + chatId));
     }
 
     public QuestionSession updateById(Long id, QuestionSession q) {
@@ -36,13 +35,13 @@ public class QuestionSessionServiceBean {
                     qs.setChatID(q.getChatID());
                     return questionSessionRepository.save(qs);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Question Session not found with id = " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Question Session not found with id = " + id));
     }
 
     public QuestionSession updateByChatId(QuestionSession q) {
         int status = questionSessionRepository.updateByChatId(q);
         if (status < 1) {
-            throw new EntityNotFoundException("Question Session not found with chatID = " + q.getChatID());
+            throw new ResourceNotFoundException("Question Session not found with chatID = " + q.getChatID());
         }
         return q;
     }
